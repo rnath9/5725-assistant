@@ -2,6 +2,7 @@ from board_cell import Square
 from piece import Piece
 from pawn import Pawn
 from rook import Rook
+from bishop import Bishop
 
 #TODO turn that into a package
 
@@ -13,6 +14,9 @@ for col in range(8):
 for r in [0,7]:
   for c in [0,7]:
     board[r][c].piece = Rook("white" if r == 0 else "black", [r,c])
+  for c in [2,5]:
+    board[r][c].piece = Bishop("white" if r == 0 else "black", [r,c])
+
 
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
 def print_cell(coordinates):
@@ -51,8 +55,16 @@ for val in black_e_pawn.available_moves(board):
 
 # print(rook.available_moves(board))
 
-print("\ncreating a dummy black rook at A3, testing moves\n")
-board[2][0].piece = Rook("black", [2,0])
-rookA3 = board[2][0].piece
-for val in rookA3.available_moves(board):
-  print_cell(val)
+# print("\ncreating a dummy black rook at A3, testing moves\n")
+# board[2][0].piece = Rook("black", [2,0])
+# rookA3 = board[2][0].piece
+# for val in rookA3.available_moves(board):
+#   print_cell(val)
+
+#bishop testing
+# print()
+# board[3][3].piece = Bishop("black", [3,3])
+# print_cell([3,3])
+# print()
+# for cell in (board[3][3].piece.available_moves(board)):
+#   print_cell(cell)
