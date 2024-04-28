@@ -3,6 +3,7 @@ from piece import Piece
 from pawn import Pawn
 from rook import Rook
 from bishop import Bishop
+from queen import Queen
 
 #TODO turn that into a package
 
@@ -65,6 +66,14 @@ for val in black_e_pawn.available_moves(board):
 # print()
 # board[3][3].piece = Bishop("black", [3,3])
 # print_cell([3,3])
+# print()
+# for cell in (board[3][3].piece.available_moves(board)):
+#   print_cell(cell)
+
+#queen testing
+# print()
+# board[3][3].piece = Queen("black", [3,3])
+# print(board)
 # print()
 # for cell in (board[3][3].piece.available_moves(board)):
 #   print_cell(cell)
