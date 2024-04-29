@@ -6,7 +6,6 @@ from bishop import Bishop
 from queen import Queen
 from knight import Knight
 from king import King
-
 #TODO turn that into a package
 
 board = [[Square() for _ in range(8)] for _ in range(8)]
@@ -34,9 +33,32 @@ def get_coordinates(square_name):
   assert len(square_name) == 2
   return [int(square_name[1])-1,ord(square_name[0].upper()) - ord('A')]
 
+def print_board():
+  for row in board[::-1]:
+    print(row)
 
-print("verify valid board")
-print(board)
+whiteTurn = True
+while True:
+  print_board()
+  print("make a move")
+  goodMove = False 
+  while not goodMove:
+    userstatement = input().split(" ")
+    piece_place = userstatement[0]
+    destination = userstatement[-1]
+    piece_coords = get_coordinates(piece_place)
+    piece = board[piece_coords[0]][piece_coords[1]].piece
+    print(piece)
+    print(piece.available_moves(board))
+    print(piece.color)
+    if get_coordinates(destination) in piece.available_moves(board) and ((whiteTurn and piece.color == "white") or (not whiteTurn and piece.color != "white")):
+      board[piece_coords[0]][piece_coords[1]].piece = None
+      coords = get_coordinates(destination)
+      board[coords[0]][coords[1]].piece = piece
+      piece.row = coords[0]
+      piece.col = coords[1]
+      goodMove = True
+      whiteTurn = not whiteTurn
 # print("\nchecking white E pawn's moves")
 # E2 = get_coordinates("E2")
 # white_e_pawn = board[E2[0]][E2[1]].piece

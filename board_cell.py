@@ -4,7 +4,7 @@ class Square():
 
   def __str__(self):
     if self.piece == None:
-      return ""
+      return " "
     else:
       return self.piece.__str__()
     

@@ -25,14 +25,14 @@ class Pawn(Piece):
     else:
       dr = -1
     if self.row + dr >=0 and self.row+dr <= 7:
-      if self.col >0 and board[self.row + dr][self.col-1].piece != None and board[self.row + dr][self.col-1].color != self.color:
+      if self.col >0 and board[self.row + dr][self.col-1].piece != None and board[self.row + dr][self.col-1].piece.color != self.color:
         res.append([self.row+dr, self.col-1])
-      if self.col <7 and board[self.row + dr][self.col+1].piece != None and board[self.row + dr][self.col-1].color != self.color:
+      if self.col <7 and board[self.row + dr][self.col+1].piece != None and board[self.row + dr][self.col-1].piece.color != self.color:
         res.append([self.row+dr, self.col+1])
     #check if en passant
     if (self.color == "white" and self.row == 4) or (self.row == 3 and self.color == "black"):
-      if self.col -1 >0 and type(board[self.row+dr][self.col-1].piece) == Pawn and board[self.row + dr][self.col-1].color != self.color:
+      if self.col -1 >0 and type(board[self.row+dr][self.col-1].piece) == Pawn and board[self.row + dr][self.col-1].piece.color != self.color:
         res.append([self.row+1, self.col-1])
-      if self.col +1 <7 and type(board[self.row+dr][self.col+1].piece) == Pawn and board[self.row + dr][self.col-1].color != self.color:
+      if self.col +1 <7 and type(board[self.row+dr][self.col+1].piece) == Pawn and board[self.row + dr][self.col-1].piece.color != self.color:
         res.append([self.row+1, self.col-1])
     return res

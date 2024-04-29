@@ -4,10 +4,11 @@ class Piece:
     self.row = position[0]
     self.col = position[1]
   
-  def move(self, new_position):
-    if new_position not in self.available_moves():
+  def move(self, board, row, col):
+    if [row, col] not in self.available_moves(board):
       return False
-    self.position = new_position
+    self.row = row
+    self.col = col
     return True
   
   def available_moves(self):
