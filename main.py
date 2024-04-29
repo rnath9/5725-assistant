@@ -17,6 +17,7 @@ for r in [0,7]:
     board[r][c].piece = Rook("white" if r == 0 else "black", [r,c])
   for c in [2,5]:
     board[r][c].piece = Bishop("white" if r == 0 else "black", [r,c])
+  board[r][3] = Queen("white" if r == 0 else "black", [r,3])
 
 
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
@@ -31,19 +32,19 @@ def get_coordinates(square_name):
 
 print("verify valid board")
 print(board)
-print("\nchecking white E pawn's moves")
-E2 = get_coordinates("E2")
-white_e_pawn = board[E2[0]][E2[1]].piece
+# print("\nchecking white E pawn's moves")
+# E2 = get_coordinates("E2")
+# white_e_pawn = board[E2[0]][E2[1]].piece
 
-for val in white_e_pawn.available_moves(board):
-  print_cell(val)
+# for val in white_e_pawn.available_moves(board):
+#   print_cell(val)
 
-print("\nchecking black E pawn's moves")
-E7 = get_coordinates("E7")
-black_e_pawn = board[E7[0]][E7[1]].piece
+# print("\nchecking black E pawn's moves")
+# E7 = get_coordinates("E7")
+# black_e_pawn = board[E7[0]][E7[1]].piece
 
-for val in black_e_pawn.available_moves(board):
-  print_cell(val)
+# for val in black_e_pawn.available_moves(board):
+#   print_cell(val)
 
 
 # print("\nrook A1's moves")
