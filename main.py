@@ -4,6 +4,7 @@ from pawn import Pawn
 from rook import Rook
 from bishop import Bishop
 from queen import Queen
+from knight import Knight
 
 #TODO turn that into a package
 
@@ -17,7 +18,9 @@ for r in [0,7]:
     board[r][c].piece = Rook("white" if r == 0 else "black", [r,c])
   for c in [2,5]:
     board[r][c].piece = Bishop("white" if r == 0 else "black", [r,c])
-  board[r][3] = Queen("white" if r == 0 else "black", [r,3])
+  for c in [1,6]:
+    board[r][c].piece = Knight("white" if r == 0 else "black", [r,c])
+  board[r][3].piece = Queen("white" if r == 0 else "black", [r,3])
 
 
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
@@ -78,3 +81,7 @@ print(board)
 # print()
 # for cell in (board[3][3].piece.available_moves(board)):
 #   print_cell(cell)
+
+#knight testing
+for cell in (board[7][1].piece.available_moves(board)):
+  print_cell(cell)
