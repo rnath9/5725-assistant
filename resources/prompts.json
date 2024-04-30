@@ -1,0 +1,133 @@
+{
+  "keyword": [
+    "mungo",
+    "hey mungo",
+    "mongo",
+    "mango",
+    "hey mongo",
+    "hey mango",
+    "my go",
+    "hey my go",
+    "what's up mongo",
+    "what's up mungo",
+    "what's up mango",
+    "manga"
+  ],
+  "weather": [
+    "what is the weather",
+    "what's the weather",
+    "how is the weather",
+    "how's the weather",
+    "can you tell me the weather",
+    "what is the temperature",
+    "what's the temperature",
+    "is it warm outside",
+    "is it cold outside"
+  ],
+  "lighton": [
+    "turn on the light",
+    "turn on the lights",
+    "turn the light on",
+    "turn the lights on",
+    "light on",
+    "lights on",
+    "turn the lights",
+    "turn the light"
+  ],
+  "lightoff": [
+    "turn off the light",
+    "turn off the lights",
+    "turn the light off",
+    "turn the lights off",
+    "light off",
+    "lights off",
+    "shut the lights",
+    "shut the light"
+  ],
+  "setlight": [
+    "dim the lights",
+    "dim the light",
+    "set the light",
+    "set the lights",
+    "change the light",
+    "change the lights",
+    "turn down the light",
+    "turn down the lights",
+    "turn up the light",
+    "turn up the lights"
+  ],
+  "percentages": [
+    "ten",
+    "twenty",
+    "thirty",
+    "fourty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety",
+    "hundred",
+    "one hundred",
+    "a hundred",
+    "one-hundered"
+  ],
+  "game": [
+    "let's play a game",
+    "i want to play a game",
+    "can we play a game",
+    "do you have any games",
+    "let us play a game",
+    "do you have games",
+    "what games do you have",
+    "what game do you have",
+    "what game do you play",
+    "play a game"
+  ],
+  "joke": [
+    "tell me a joke",
+    "do you know any jokes",
+    "do you have any jokes",
+    "what's a joke",
+    "what is a joke",
+    "enlighten me with a joke",
+    "cheer me up",
+    "are you funny"
+  ],
+  "song": [
+    "play a song",
+    "play me a song",
+    "do you have music",
+    "do you have tunes",
+    "play on spotify",
+    "play on apple music",
+    "play on amazon music"
+  ],
+  "calendar": [
+    "in my calendar",
+    "can you set a reminder",
+    "can i set a time in my calendar",
+    "i have an appointment",
+    "set my calendar",
+    "i have an event",
+    "set an event",
+    "remind me of an event"
+  ],
+  "day": [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
+  ],
+  "close": [
+    "nevermind",
+    "never mind",
+    "close",
+    "restart",
+    "i don't want to talk to you",
+    "i hate you",
+    "leave me alone"
+  ]
+}
