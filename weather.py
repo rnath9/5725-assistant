@@ -19,16 +19,16 @@ def current_day(forecast):
 
 def parse_sentence_for_time(str):
     tokens = str.split(" ")
-    for index in range(len(tokens) -1):
+    for index in range(len(tokens) - 1):
         if tokens[index] in numberMap and tokens[index+1] in ["am", "pm"]:
         #they asked for a specific time, check if there's a day of the week too?
-            if index-1 >= 0 and tokens[index-1] in weekdays:
-                return (tokens[index-1], time_generator_3000(tokens[index] + " " + tokens[index+1]))
-            else:
-                return (current_day(weather), time_generator_3000(tokens[index] + " " + tokens[index+1]))
+            for diff in [-1,-2,+2,+3]:
+                if index + diff >= 0 and tokens[index+diff] in weekdays:
+                    return (tokens[index+diff], time_generator_3000(tokens[index] + " " + tokens[index+1]))
+            return (current_day(weather), time_generator_3000(tokens[index] + " " + tokens[index+1]))
     for index in range(len(tokens)-1):
         if tokens[index] in weekdays:
-            return (tokens[index], 18 if tokens[index+1] == "night" else 12)
+            return (tokens[index], 20 if tokens[index+1] == "night" else 12)
     return -1
 
 def time_generator_3000(str):
@@ -38,7 +38,7 @@ def time_generator_3000(str):
     elif "pm" in str:
         hour = 12
     else:
-        return hour #invalid output
+        return -1 #invalid output
     hour_string = str.split(" ")[0].lower() #assumption, str first element is a number
     if hour_string not in numberMap:
         return -1
