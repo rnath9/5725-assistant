@@ -31,7 +31,34 @@ for i in range(8):
         x = x_offset + j * cell_size
         y = y_offset + i * cell_size
         # Draw a rectangle for the cell
-        pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1)  
+        pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1) 
+
+source_image = pygame.image.load('Chess/chessPieces.png')  # Replace 'image.png' with the path to your image file
+bishop = pygame.image.load('Chess/Images/bishop_black.png')
+image_width, image_height = source_image.get_rect().size
+pieces = []
+for i in range(2):
+    for j in range(3):
+        # Define the rectangle for each sub-image
+        sub_rect = pygame.Rect(j * image_width/3, i * image_height/2, image_width/3, image_height/2)
+        # Extract the sub-image using the sub-rectangle
+        sub_image = source_image.subsurface(sub_rect)
+        pieces.append(sub_image)
+
+# Get the dimensions of the image
+pieces[1] = pygame.transform.scale(pieces[1], (cell_size, cell_size))
+bishop = pygame.transform.scale(bishop, (cell_size-4,cell_size-4))
+# Calculate the position to center the image on the screen
+image_width, image_height = bishop.get_rect().size
+# Calculate the position to center the image on the screen
+image_x = (screen_width - image_width) // 2
+image_y = (screen_height - image_height) // 2
+
+print(cell_size)
+# Draw the scaled image ont
+# o the screen
+screen.blit(bishop, (55, 12))
+# Draw the image onto the screen
 # Update the display using flip 
 pygame.display.flip() 
   
