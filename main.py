@@ -48,8 +48,11 @@ while True:
     destination = userstatement[-1]
     piece_coords = get_coordinates(piece_place)
     piece = board[piece_coords[0]][piece_coords[1]].piece
-    print(piece)
-    print(piece.available_moves(board))
+    try:
+      print(piece.available_moves(board))
+    except AttributeError:
+      print("Not a valid move, try again")
+      continue
     print(piece.color)
     if get_coordinates(destination) in piece.available_moves(board) and ((whiteTurn and piece.color == "white") or (not whiteTurn and piece.color != "white")):
       board[piece_coords[0]][piece_coords[1]].piece = None
