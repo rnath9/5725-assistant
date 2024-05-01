@@ -17,18 +17,32 @@ def current_day(forecast):
         seen.remove(day)
     return seen.pop()
 
-def parse_sentence_for_time(str):
-    tokens = str.split(" ")
+def parse_sentence_for_time(s):
+    tokens = s.split(" ")
+    period = ""
+    time = ""
+    day = None
+    if "am" in tokens:
+        period = "am"
+    else:
+        period = "pm"
     for index in range(len(tokens) - 1):
-        if tokens[index] in numberMap and tokens[index+1] in ["am", "pm"]:
-        #they asked for a specific time, check if there's a day of the week too?
-            for diff in [-1,-2,+2,+3]:
-                if index + diff >= 0 and tokens[index+diff] in weekdays:
-                    return (tokens[index+diff], time_generator_3000(tokens[index] + " " + tokens[index+1]))
-            return (current_day(weather), time_generator_3000(tokens[index] + " " + tokens[index+1]))
-    for index in range(len(tokens)-1):
         if tokens[index] in weekdays:
-            return (tokens[index], 20 if tokens[index+1] == "night" else 12)
+            day = tokens[index]
+        if tokens[index] in numberMap and time == "":
+            time = tokens[index]
+
+    if day is None:
+        day = current_day(weather)
+    if time == "":
+        if "night" or "tonight" in tokens:
+            time = "eight"
+            period = "pm"
+        else:
+            time = "twelve"
+            period = "pm"
+    if time is not None and period is not None and day is not None:
+        return (day, time_generator_3000(time + " " + period))
     return -1
 
 def time_generator_3000(str):
@@ -42,17 +56,18 @@ def time_generator_3000(str):
     hour_string = str.split(" ")[0].lower() #assumption, str first element is a number
     if hour_string not in numberMap:
         return -1
+    if hour_string == "twelve":
+        if "am" in str:
+            return numberMap[hour_string] + 12
+        else:
+            return numberMap[hour_string] 
     return numberMap[hour_string] + hour
 
 def get_weather_results(input):
     day_time = parse_sentence_for_time(input)
     if day_time == -1:
-        return #make this exception to propagate into the main function and fix there
+        raise ValueError
     day, time = day_time
-    forecast = get_weather()
-    today = current_day(forecast)
-    parseFor = ""
-    if time >= 18 or time < 6:
-        day = weekdays[weekdays.index(day) - 1]
+    today = current_day(weather)
     print(day)
     print(time)
