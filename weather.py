@@ -35,7 +35,7 @@ def parse_sentence_for_time(s):
     if day is None:
         day = current_day(weather)
     if time == "":
-        if "night" or "tonight" in tokens:
+        if "night" in tokens or "tonight" in tokens:
             time = "eight"
             period = "pm"
         else:
