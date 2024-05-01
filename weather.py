@@ -1,4 +1,5 @@
 import requests
+import datetime
 
 def get_weather():
   return requests.get("https://api.weather.gov/gridpoints/BGM/44,70/forecast").json()
@@ -10,12 +11,8 @@ numberMap = {"one":1, "two":2 ,"three":3, "four":4, "five":5, "six":6,"seven":7,
 weather = get_weather()
 
 def current_day(forecast):
-    seen = set(weekdays)
-    for poss in forecast["properties"]["periods"]:
-        day = poss['name'].split(" ")[0].lower()
-    if day in seen:
-        seen.remove(day)
-    return seen.pop()
+    index = datetime.datetime.now().weekday()
+    return weekdays[index]
 
 def parse_sentence_for_time(s):
     tokens = s.split(" ")
