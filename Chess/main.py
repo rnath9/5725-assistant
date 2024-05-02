@@ -46,7 +46,10 @@ def tile_at(board,x,y):
   else:
     x = x - 10
     y = y - 50
-    return board[math.floor(x/27)][math.floor(y/27)]
+    try:
+      return board[math.floor(x/27)][math.floor(y/27)]
+    except:
+      return False
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
 def print_cell(coordinates):
     print(chr(ord('A')+coordinates[1])+str(coordinates[0]+1))

@@ -1,8 +1,8 @@
 from Chess.piece import Piece
 
 class Rook(Piece):
-  def __init__(self, color, position):
-    super().__init__(color, position,"rook")
+    def __init__(self, color, position):
+        super().__init__(color, position,"rook")
 
     def __str__(self):
         return "r"
@@ -19,13 +19,13 @@ class Rook(Piece):
                 if self.row + dr <0 or self.row + dr >7:
             #print(str(self.row+dr) + " out of bounds, breaking")
                     break #check if out of bounds
-                if board[self.row + dr][self.col].piece == None:
-                    res.append([self.row + dr, self.col])
+                if board[self.col][self.row+dr].piece == None:
+                    res.append([self.col, self.row+dr])
                 #piece present, can we capture it?
-                if board[self.row + dr][self.col].piece != None:
-                    if board[self.row + dr][self.col].piece.color != self.color:
+                if board[self.col][self.row+dr].piece != None:
+                    if board[self.col][self.row+dr].piece.color != self.color:
                 #print("takeable piece at " + str(self.row + dr) + "," + str(self.col))
-                        res.append([self.row + dr, self.col]) # can take
+                        res.append([self.col, self.row +dr]) # can take
             #else:
                 #print("not takeable piece at " + str(self.row + dr) + "," + str(self.col))
                     break
@@ -36,13 +36,13 @@ class Rook(Piece):
                 if self.col + dc <0 or self.col + dc >7:
                 #print(str(self.col+dc) + " out of bounds, breaking")
                     break #check if out of bounds
-                if board[self.row][self.col+dc].piece == None:
+                if board[self.col+dc][self.row].piece == None:
                     res.append([self.row, self.col+dc])
                 #piece present
-                if board[self.row ][self.col+dc].piece != None:
-                    if board[self.row ][self.col+dc].piece.color != self.color:
+                if board[self.col +dc ][self.row].piece != None:
+                    if board[self.col+dc ][self.row].piece.color != self.color:
                     #print("takeable piece at " + str(self.row) + "," + str(self.col+dc))
-                        res.append([self.row, dc+ self.col]) # can take
+                        res.append([self.col+dc, self.row]) # can take
                 #else:
                 #print("not takeable piece at " + str(self.row) + "," + str(self.col+dc))
                     break
