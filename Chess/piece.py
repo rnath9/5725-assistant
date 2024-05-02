@@ -20,5 +20,5 @@ class Piece:
   
   def get_image(self):
     return self.image
-  def available_moves(self):
-    raise NotImplementedError("Subclasses must implement this method")
+  # def available_moves(self):
+  #   raise NotImplementedError("Subclasses must implement this method")

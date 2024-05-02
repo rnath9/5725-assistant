@@ -86,8 +86,8 @@ while running:
                     temp = selected_piece.col
                     selected_piece.col = selected_piece.row
                     selected_piece.row = temp
-                    print(selected_piece.row)
                     print(selected_piece.col)
+                    print(selected_piece.row)
                     timer = 0
                     
     
@@ -96,19 +96,23 @@ while running:
         if (pygame.mouse.get_pressed()[0]): 
             dest_choice = main.tile_at(board,mouse_pos[1],mouse_pos[0])
             if (dest_choice!=False):
-                if (dest_choice.piece != None):
-                    if (dest_choice.piece.color == turn):
-                        print("NOT A LEGAL MOVE")
-                        selected_piece = None
-                        timer = 0
-                    else:
-                        print("Taken")
-                        dest = dest_choice  
-                        board[selected_piece.col][selected_piece.row].piece = None  
+                # print([dest_choice.row,dest_choice.col])
+                # print(selected_piece.available_moves(board))
+                # print([dest_choice.row,dest_choice.col] in selected_piece.available_moves(board))
+                if ([dest_choice.row,dest_choice.col] in selected_piece.available_moves(board)):
+                    dest = dest_choice  
+                    board[selected_piece.col][selected_piece.row].piece = None  
                 else:
-                    dest = dest_choice          
+                    selected_piece = None
+                    print("NOT A LEGAL MOVE")    
+                         
     if (dest != None and selected_piece != None):
         board[selected_piece.col][selected_piece.row].piece = None
+        if (isinstance(selected_piece,main.Pawn)):
+            if abs(selected_piece.col - dest.row)>1:
+                print(abs(selected_piece.col - dest.col))
+                selected_piece.has_moved = True
+                print("used")
         dest.piece = selected_piece
         dest.piece.col = dest.col
         dest.piece.row = dest.row
