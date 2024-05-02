@@ -1,11 +1,8 @@
-from piece import Piece
+from Chess.piece import Piece
 
 class Pawn(Piece):
-    def __init__(self, color, position):
-       super().__init__(color, position)
-       
-    def __str__(self):
-        return "p"
+  def __init__(self, color, position):
+    super().__init__(color, position, "pawn")
 
     def __repr__(self):
         return self.__str__()
