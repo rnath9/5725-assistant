@@ -49,12 +49,12 @@ def tile_at(board,x,y):
     return board[math.floor(x/27)][math.floor(y/27)]
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
 def print_cell(coordinates):
-  print(chr(ord('A')+coordinates[1])+str(coordinates[0]+1))
+    print(chr(ord('A')+coordinates[1])+str(coordinates[0]+1))
 
 """Takes in an input, like "A4" and maps it to the coordinates [0,3]"""
 def get_coordinates(square_name):
-  assert len(square_name) == 2
-  return [int(square_name[1])-1,ord(square_name[0].upper()) - ord('A')]
+    assert len(square_name) == 2
+    return [int(square_name[1])-1,ord(square_name[0].upper()) - ord('A')]
 
 # def print_board():
 #   for row in board[::-1]:

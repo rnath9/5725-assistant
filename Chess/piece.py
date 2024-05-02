@@ -11,12 +11,12 @@ class Piece:
     self.image = pygame.image.load('Chess/Images/'+piece+'_'+cname+".png")
     self.image = pygame.transform.scale(self.image,(22,22))
   
-  def move(self, board, row, col):
-    if [row, col] not in self.available_moves(board):
-      return False
-    self.row = row
-    self.col = col
-    return True
+    def move(self, board, row, col):
+        if [row, col] not in self.available_moves(board):
+            return False
+        self.row = row
+        self.col = col
+        return True
   
   def get_image(self):
     return self.image
