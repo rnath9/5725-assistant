@@ -14,7 +14,7 @@
     "manga"
   ],
   "weather": [
-    "what is the weather",
+    "is the weather",
     "what's the weather",
     "how is the weather",
     "how's the weather",
@@ -112,19 +112,10 @@
     "set an event",
     "remind me of an event"
   ],
-  "day": [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday"
-  ],
   "close": [
     "nevermind",
     "never mind",
-    "close",
+    "shut down",
     "restart",
     "i don't want to talk to you",
     "i hate you",
