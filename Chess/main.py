@@ -1,29 +1,52 @@
-from board_cell import Square
-from piece import Piece
-from pawn import Pawn
-from rook import Rook
-from bishop import Bishop
-from queen import Queen
-from knight import Knight
-from king import King
+from Chess.board_cell import Square
+from Chess.piece import Piece
+from Chess.pawn import Pawn
+from Chess.rook import Rook
+from Chess.bishop import Bishop
+from Chess.queen import Queen
+from Chess.knight import Knight
+from Chess.king import King
+import math
 #TODO turn that into a package
+def initialize_board():
+  board = [[None for _ in range(8)] for _ in range(8)]
+  for c in range(8):
+    for r in range(8):
+      board[r][c] = Square(r,c)
+  for col in range(8):
+    board[1][col].piece = Pawn(True, [1, col])
+    board[6][col].piece = Pawn(False, [6, col])
 
-board = [[Square() for _ in range(8)] for _ in range(8)]
-for col in range(8):
-  board[1][col].piece = Pawn("white", [1, col])
-  board[6][col].piece = Pawn("black", [6, col])
+  for r in [0,7]:
+    for c in [0,7]:
+      board[r][c].piece = Rook(True if r == 0 else False, [r,c])
+    for c in [2,5]:
+      board[r][c].piece = Bishop(True if r == 0 else False, [r,c])
+    for c in [1,6]:
+      board[r][c].piece = Knight(True if r == 0 else False, [r,c])
+    board[r][3].piece = Queen(True if r == 0 else False, [r,3])
+    board[r][4].piece = King(True if r == 0 else False, [r,4])
+  return board 
 
-for r in [0,7]:
-  for c in [0,7]:
-    board[r][c].piece = Rook("white" if r == 0 else "black", [r,c])
-  for c in [2,5]:
-    board[r][c].piece = Bishop("white" if r == 0 else "black", [r,c])
-  for c in [1,6]:
-    board[r][c].piece = Knight("white" if r == 0 else "black", [r,c])
-  board[r][3].piece = Queen("white" if r == 0 else "black", [r,3])
-  board[r][4].piece = King("white" if r == 0 else "black", [r,3])
-
-
+def piece_at(board, x,y):
+  if (x>220 or x<10):
+    return False
+  elif (y<50 or y>270):
+    return False
+  else:
+    x = x - 10
+    y = y - 50
+    return board[math.floor(x/27)][math.floor(y/27)]
+  
+def tile_at(board,x,y):
+  if (x>220 or x<10):
+    return False
+  elif (y<50 or y>270):
+    return False
+  else:
+    x = x - 10
+    y = y - 50
+    return board[math.floor(x/27)][math.floor(y/27)]
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
 def print_cell(coordinates):
   print(chr(ord('A')+coordinates[1])+str(coordinates[0]+1))
@@ -33,35 +56,35 @@ def get_coordinates(square_name):
   assert len(square_name) == 2
   return [int(square_name[1])-1,ord(square_name[0].upper()) - ord('A')]
 
-def print_board():
-  for row in board[::-1]:
-    print(row)
+# def print_board():
+#   for row in board[::-1]:
+#     print(row)
 
-whiteTurn = True
-while True:
-  print_board()
-  print("make a move")
-  goodMove = False 
-  while not goodMove:
-    userstatement = input().split(" ")
-    piece_place = userstatement[0]
-    destination = userstatement[-1]
-    piece_coords = get_coordinates(piece_place)
-    piece = board[piece_coords[0]][piece_coords[1]].piece
-    try:
-      print(piece.available_moves(board))
-    except AttributeError:
-      print("Not a valid move, try again")
-      continue
-    print(piece.color)
-    if get_coordinates(destination) in piece.available_moves(board) and ((whiteTurn and piece.color == "white") or (not whiteTurn and piece.color != "white")):
-      board[piece_coords[0]][piece_coords[1]].piece = None
-      coords = get_coordinates(destination)
-      board[coords[0]][coords[1]].piece = piece
-      piece.row = coords[0]
-      piece.col = coords[1]
-      goodMove = True
-      whiteTurn = not whiteTurn
+# whiteTurn = True
+# while True:
+#   print_board()
+#   print("make a move")
+#   goodMove = False 
+#   while not goodMove:
+#     userstatement = input().split(" ")
+#     piece_place = userstatement[0]
+#     destination = userstatement[-1]
+#     piece_coords = get_coordinates(piece_place)
+#     piece = board[piece_coords[0]][piece_coords[1]].piece
+#     try:
+#       print(piece.available_moves(board))
+#     except AttributeError:
+#       print("Not a valid move, try again")
+#       continue
+#     print(piece.color)
+#     if get_coordinates(destination) in piece.available_moves(board) and ((whiteTurn and piece.color == "white") or (not whiteTurn and piece.color != "white")):
+#       board[piece_coords[0]][piece_coords[1]].piece = None
+#       coords = get_coordinates(destination)
+#       board[coords[0]][coords[1]].piece = piece
+#       piece.row = coords[0]
+#       piece.col = coords[1]
+#       goodMove = True
+#       whiteTurn = not whiteTurn
 # print("\nchecking white E pawn's moves")
 # E2 = get_coordinates("E2")
 # white_e_pawn = board[E2[0]][E2[1]].piece

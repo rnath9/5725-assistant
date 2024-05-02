@@ -1,11 +1,11 @@
-from piece import Piece
-from rook import Rook
-from bishop import Bishop
+from Chess.piece import Piece
+from Chess.rook import Rook
+from Chess.bishop import Bishop
 
 
 class Queen(Piece):
   def __init__(self, color, position):
-    super().__init__(color, position)
+    super().__init__(color, position,"queen")
 
   def __str__(self):
     return "q"

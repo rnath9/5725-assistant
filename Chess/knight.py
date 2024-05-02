@@ -1,8 +1,8 @@
-from piece import Piece
+from Chess.piece import Piece
 
 class Knight(Piece):
   def __init__(self, color, position):
-    super().__init__(color, position)
+    super().__init__(color, position,"knight")
 
   def __str__(self):
     return "n"
