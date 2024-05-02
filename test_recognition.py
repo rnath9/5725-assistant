@@ -27,8 +27,9 @@ while loop_running:
         print(keyword)
         if ("mongo" in keyword):    
             print("WASSUP")
+            engine.say("Yes?")
             engine.runAndWait()
-            slumber(1)
+            print("ready")
             while True:
                 data = stream.read(4096, exception_on_overflow=False)
                 if recognizer.AcceptWaveform(data):

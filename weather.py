@@ -30,7 +30,10 @@ def parse_sentence_for_time(s):
             time = tokens[index]
 
     if day is None:
-        day = current_day()
+        if "tomorrow" in tokens:
+            day = weekdays[weekdays.index(current_day())+1]
+        else:
+            day = current_day()
     if time == "":
         if "night" in tokens or "tonight" in tokens:
             time = "eight"
