@@ -3,6 +3,7 @@ from time import sleep as slumber
 from vosk import Model, KaldiRecognizer
 import json
 import pyttsx3
+import weather
 engine = pyttsx3.init()
 engine.setProperty('voice',"english")
 engine.setProperty('rate',120)
@@ -25,28 +26,31 @@ while loop_running:
         keyword = recognizer.Result()
         print(keyword)
         if ("mongo" in keyword):    
-            engine.say("WASSUP")
+            print("WASSUP")
             engine.runAndWait()
             slumber(1)
-            print("JESUS ROSE ON THE THIRD DAY") 
             while True:
                 data = stream.read(4096, exception_on_overflow=False)
                 if recognizer.AcceptWaveform(data):
                     t = (recognizer.Result())[14:-3]
-                    match = False
+                    match = None
                     for k,v in prompt_map.items():
                         for possible_match in v:
                             if possible_match in t:
-                                match = True
+                                match = k
                     print(t)
-                    if match == False:
+                    print(match)
+                    if match == None:
                         engine.say("i do not understand")
                     else:
-                        engine.say("the weather is jubilous")
+                        if match == 'weather':
+                            engine.say(weather.get_weather_results(t))
+                        elif match == 'close':
+                            engine.say("we over")
+                            engine.runAndWait()
+                            loop_running = False
+                            break
+                        else:
+                            engine.say("unimplemented command")
                     engine.runAndWait()
-                    print(t in prompt_map["close"])
-                    if t in prompt_map["close"]:
-                        loop_running = False
                     break
-engine.say("we over")
-engine.runAndWait()
