@@ -11,6 +11,9 @@ class Bishop(Piece):
         return self.__str__()
   
     def available_moves(self, board):
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         res = []
         #check if can move up one or two
         #print("row logic")
@@ -23,13 +26,16 @@ class Bishop(Piece):
                     #print(str(self.row+dr) + " out of bounds, breaking")
                     break #check if out of bounds
                 if board[self.col + dc][self.row+dr].piece == None:
-                    res.append([self.col + dc, self.row+ dr])
+                    res.append((self.col + dc, self.row+ dr))
                 #piece present, can we capture it?
                 if board[self.col + dc][self.row+dr].piece != None:
                     if board[self.col + dc][self.row+dr].piece.color != self.color:
                         #print("takeable piece at " + str(self.row + dr) + "," + str(self.col))
-                        res.append([self.col + dc, self.row+dr]) # can take
+                        res.append((self.col + dc, self.row+dr)) # can take
                     #else:
                     #print("not takeable piece at " + str(self.row + dr) + "," + str(self.col))
                     break
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         return res

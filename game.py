@@ -58,11 +58,12 @@ while running:
             if (choice != False):
                 if (choice.piece != None and choice.piece.color == turn):
                     selected_piece = choice.piece
+                    print(type(selected_piece))
                     print("piece picked")
-                    temp = selected_piece.col
-                    selected_piece.col = selected_piece.row
-                    selected_piece.row = temp
+                    print(selected_piece.col)
+                    print(selected_piece.row)
                     available_moves = selected_piece.available_moves(board)
+                    print(available_moves)
                     if available_moves == []:
                         selected_piece = None
                         print("wrong piece dummy")
@@ -74,13 +75,19 @@ while running:
         if (pygame.mouse.get_pressed()[0]): 
             dest_choice = main.tile_at(board,mouse_pos[1],mouse_pos[0])
             if (dest_choice!=False):
-                # print([dest_choice.row,dest_choice.col])
-                # print(selected_piece.available_moves(board))
-                # print([dest_choice.row,dest_choice.col] in selected_piece.available_moves(board))
-                if ([dest_choice.row,dest_choice.col] in available_moves):
+                temp = selected_piece.col
+                selected_piece.col = selected_piece.row
+                selected_piece.row = temp
+                print((dest_choice.row,dest_choice.col))
+                print(selected_piece.available_moves(board))
+                print((dest_choice.row,dest_choice.col) in selected_piece.available_moves(board))
+                if ((dest_choice.row,dest_choice.col) in available_moves):
                     dest = dest_choice  
                     board[selected_piece.col][selected_piece.row].piece = None  
                 else:
+                    temp = selected_piece.col
+                    selected_piece.col = selected_piece.row
+                    selected_piece.row = temp
                     selected_piece = None
                     print("NOT A LEGAL MOVE")    
                          

@@ -6,6 +6,9 @@ class Pawn(Piece):
         self.has_moved = False 
         self.en_passant_possible = False
 
+    def __str__(self):
+        return "p"
+
     def __repr__(self):
         return self.__str__()
     # def available_moves(self, board):
@@ -39,6 +42,9 @@ class Pawn(Piece):
     #                     res.append([self.row+1, self.col+1])
     #     return res
     def available_moves(self, board):
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         res = []
         # Define movement direction based on pawn color (1 for white, -1 for black)
         direction = 1 if self.color == True else -1
@@ -46,17 +52,19 @@ class Pawn(Piece):
 
         if 0 <= self.col + direction < 8 and board[self.col+direction][self.row].piece is None:
         
-            res.append([self.col+ direction, self.row])
+            res.append((self.col+ direction, self.row))
 
             # Pawn can move two squares forward from starting position if both squares are empty
             if not self.has_moved and board[self.col+ 2 * direction][self.row].piece is None:
-                res.append([self.col+ 2 * direction, self.row])
+                res.append((self.col+ 2 * direction, self.row))
 
         # Pawn can capture diagonally
         for dc in [-1, 1]:
             if 0 <= self.col + direction < 8 and 0 <= self.row + dc < 8:
                 target_square = board[self.col + direction][self.row+dc]
                 if target_square.piece is not None and target_square.piece.color != self.color:
-                    res.append([self.col + direction, self.row+dc])
-
+                    res.append((self.col + direction, self.row+dc))
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         return res

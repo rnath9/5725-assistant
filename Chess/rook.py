@@ -10,6 +10,9 @@ class Rook(Piece):
     def __repr__(self):
        return self.__str__()
     def available_moves(self, board):
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         res = []
         #check if can move up one or two
         #print("row logic")
@@ -20,12 +23,12 @@ class Rook(Piece):
             #print(str(self.row+dr) + " out of bounds, breaking")
                     break #check if out of bounds
                 if board[self.col][self.row+dr].piece == None:
-                    res.append([self.col, self.row+dr])
+                    res.append((self.col, self.row+dr))
                 #piece present, can we capture it?
                 if board[self.col][self.row+dr].piece != None:
                     if board[self.col][self.row+dr].piece.color != self.color:
                 #print("takeable piece at " + str(self.row + dr) + "," + str(self.col))
-                        res.append([self.col, self.row +dr]) # can take
+                        res.append((self.col, self.row +dr)) # can take
             #else:
                 #print("not takeable piece at " + str(self.row + dr) + "," + str(self.col))
                     break
@@ -37,13 +40,16 @@ class Rook(Piece):
                 #print(str(self.col+dc) + " out of bounds, breaking")
                     break #check if out of bounds
                 if board[self.col+dc][self.row].piece == None:
-                    res.append([self.row, self.col+dc])
+                    res.append((self.row, self.col+dc))
                 #piece present
                 if board[self.col +dc ][self.row].piece != None:
                     if board[self.col+dc ][self.row].piece.color != self.color:
                     #print("takeable piece at " + str(self.row) + "," + str(self.col+dc))
-                        res.append([self.col+dc, self.row]) # can take
+                        res.append((self.col+dc, self.row)) # can take
                 #else:
                 #print("not takeable piece at " + str(self.row) + "," + str(self.col+dc))
                     break
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         return res
