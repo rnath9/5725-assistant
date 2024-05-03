@@ -58,12 +58,18 @@ while running:
             if (choice != False):
                 if (choice.piece != None and choice.piece.color == turn):
                     selected_piece = choice.piece
+                    print(type(selected_piece))
                     print("piece picked")
                     temp = selected_piece.col
                     selected_piece.col = selected_piece.row
                     selected_piece.row = temp
+                    print(selected_piece.col)
+                    print(selected_piece.row)
                     available_moves = selected_piece.available_moves(board)
                     if available_moves == []:
+                        temp = selected_piece.col
+                        selected_piece.col = selected_piece.row
+                        selected_piece.row = temp
                         selected_piece = None
                         print("wrong piece dummy")
                     timer = 0
