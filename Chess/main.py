@@ -16,17 +16,42 @@ def initialize_board():
   for col in range(8):
     board[1][col].piece = Pawn(True, [1, col])
     board[6][col].piece = Pawn(False, [6, col])
-
+  white_attack_map = {}
+  black_attack_map = {}
   for r in [0,7]:
     for c in [0,7]:
       board[r][c].piece = Rook(True if r == 0 else False, [r,c])
+      if r == 0:
+        white_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
+      else:
+        black_attack_map[f"rook{col}"] = [board[r][c].piece, set()]
     for c in [2,5]:
       board[r][c].piece = Bishop(True if r == 0 else False, [r,c])
+      if r == 0:
+        white_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
+      else:
+        black_attack_map[f"bishop{col}"] = [board[r][c].piece, set()]
     for c in [1,6]:
       board[r][c].piece = Knight(True if r == 0 else False, [r,c])
+      if r == 0:
+        white_attack_map[f"knight{c}"] = [board[r][c].piece, set()]
+      else:
+        black_attack_map[f"knight{col}"] = [board[r][c].piece, set()]
     board[r][3].piece = Queen(True if r == 0 else False, [r,3])
     board[r][4].piece = King(True if r == 0 else False, [r,4])
+    if r == 0:
+      white_attack_map["queen"] = [board[r][3].piece, set()]
+      white_attack_map["king"] = [board[r][4].piece, set()]
+    else:
+      black_attack_map["queen"] = [board[r][3].piece, set()]
+      black_attack_map["king"] = [board[r][4].piece, set()]
+    for k,_ in white_attack_map.items():
+      white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board))
+    for k,_ in black_attack_map.items():
+      black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board))
+  print(white_attack_map)
   return board 
+
 
 def piece_at(board, x,y):
   if (x>220 or x<10):
