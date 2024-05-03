@@ -4,6 +4,7 @@ class Pawn(Piece):
     def __init__(self, color, position):
         super().__init__(color, position, "pawn")
         self.has_moved = False 
+        self.en_passant_possible = False
 
     def __repr__(self):
         return self.__str__()
