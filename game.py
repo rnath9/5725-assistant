@@ -94,7 +94,7 @@ while running:
     if (dest != None and selected_piece != None):
         board[selected_piece.col][selected_piece.row].piece = None
         if (isinstance(selected_piece,main.Pawn)):
-            temp = selected_piece.col
+            selected_piece.has_moved = True
             if selected_piece.en_passant_possible:
                 selected_piece.en_passant_possible = False
                 # print("used")
