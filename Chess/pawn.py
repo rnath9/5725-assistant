@@ -6,6 +6,9 @@ class Pawn(Piece):
         self.has_moved = False 
         self.en_passant_possible = False
 
+    def __str__(self):
+        return "p"
+
     def __repr__(self):
         return self.__str__()
     # def available_moves(self, board):
@@ -61,5 +64,7 @@ class Pawn(Piece):
                 target_square = board[self.col + direction][self.row+dc]
                 if target_square.piece is not None and target_square.piece.color != self.color:
                     res.append((self.col + direction, self.row+dc))
-    
+        temp = self.col
+        self.col = self.row
+        self.row = temp
         return res

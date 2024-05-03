@@ -13,11 +13,13 @@ def initialize_board():
   for c in range(8):
     for r in range(8):
       board[r][c] = Square(r,c)
+  white_attack_map = {}
+  black_attack_map = {}    
   for col in range(8):
     board[1][col].piece = Pawn(True, [1, col])
+    white_attack_map[f"pawn{col}"] = [board[1][col].piece, set()]
     board[6][col].piece = Pawn(False, [6, col])
-  white_attack_map = {}
-  black_attack_map = {}
+    black_attack_map[f"pawn{col}"] = [board[6][col].piece, set()]
   for r in [0,7]:
     for c in [0,7]:
       board[r][c].piece = Rook(True if r == 0 else False, [r,c])

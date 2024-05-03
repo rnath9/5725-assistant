@@ -85,13 +85,16 @@ while running:
                     dest = dest_choice  
                     board[selected_piece.col][selected_piece.row].piece = None  
                 else:
+                    temp = selected_piece.col
+                    selected_piece.col = selected_piece.row
+                    selected_piece.row = temp
                     selected_piece = None
                     print("NOT A LEGAL MOVE")    
                          
     if (dest != None and selected_piece != None):
         board[selected_piece.col][selected_piece.row].piece = None
         if (isinstance(selected_piece,main.Pawn)):
-            selected_piece.has_moved = True
+            temp = selected_piece.col
             if selected_piece.en_passant_possible:
                 selected_piece.en_passant_possible = False
                 # print("used")
