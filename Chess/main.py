@@ -55,9 +55,16 @@ def initialize_board():
 
 def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
   for k,_ in white_attack_map.items():
-    white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
+    if (isinstance(white_attack_map[k][0], Pawn)):
+      white_attack_map[k][1] = set(white_attack_map[k][0].available_pawn_attack(board,white_attack_map,black_attack_map,w_king,b_king, False))
+    else:
+      white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
   for k,_ in black_attack_map.items():
-    black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
+    if (isinstance(black_attack_map[k][0], Pawn)):
+      black_attack_map[k][1] = set(black_attack_map[k][0].available_pawn_attack(board,white_attack_map,black_attack_map,w_king,b_king, False))
+
+    else:
+      black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
 
 def predict(board,map,w_king,b_king, king,new_pos,og_pos):
   old_piece = board[new_pos[0]][new_pos[1]].piece
@@ -73,7 +80,7 @@ def predict(board,map,w_king,b_king, king,new_pos,og_pos):
   return result
 
 def piece_at(board, x,y):
-  if (x>220 or x<10):
+  if (x>=220 or x<=10):
     return False
   elif (y<50 or y>270):
     return False

@@ -116,6 +116,8 @@ while running:
         timer = 0
         turn = not turn
         main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
+        print(white_map)
+        print(black_map)
         # print((2,0) in white_map)
         # print(white_king_pos)
         # print("move made")

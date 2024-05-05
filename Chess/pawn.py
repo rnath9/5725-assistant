@@ -86,3 +86,39 @@ class Pawn(Piece):
         self.col = self.row
         self.row = temp
         return res
+    
+    def available_pawn_attack(self,board,white_map,black_map,w_king,b_king, pred):
+        if self.color:
+            king = w_king
+            map = black_map
+        else:
+            king = b_king
+            map = white_map
+        temp = self.col
+        self.col = self.row
+        self.row = temp
+        res = []
+        # Define movement direction based on pawn color (1 for white, -1 for black)
+        direction = 1 if self.color == True else -1
+        # Pawn can move one square forward if that square is empty
+
+        # Pawn can capture diagonally
+        for dc in [-1, 1]:
+            if 0 <= self.col + direction < 8 and 0 <= self.row + dc < 8:
+                target_square = board[self.col + direction][self.row+dc]
+                if target_square.piece is None:
+                    if pred:
+                        if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+direction,self.row+dc),(self.col,self.row)):
+                            res.append((self.col +direction, self.row+dc))
+                    else:
+                        res.append((self.col + direction, self.row+dc))
+                if target_square.piece is not None and target_square.piece.color != self.color:
+                    if pred:
+                        if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+direction,self.row+dc),(self.col,self.row)):
+                            res.append((self.col +direction, self.row+dc))
+                    else:
+                        res.append((self.col + direction, self.row+dc))
+        temp = self.col
+        self.col = self.row
+        self.row = temp
+        return res
