@@ -48,12 +48,19 @@ def initialize_board():
       black_attack_map["queen"] = [board[r][3].piece, set()]
       black_attack_map["king"] = [board[r][4].piece, set()]
     for k,_ in white_attack_map.items():
-      white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board))
+      white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
     for k,_ in black_attack_map.items():
-      black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board))
+      black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
   print(white_attack_map)
-  return board 
+  return [board,white_attack_map,black_attack_map] 
 
+def attack_map_update(board,white_attack_map,black_attack_map):
+  for k,_ in white_attack_map.items():
+    white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
+  for k,_ in black_attack_map.items():
+    black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
+  print(Piece.check_map((5,0),black_attack_map))
+  
 
 def piece_at(board, x,y):
   if (x>220 or x<10):

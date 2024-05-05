@@ -36,7 +36,10 @@ for i in range(8):
         pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1) 
 
 pygame.display.flip() 
-board = main.initialize_board()
+board_initialized = main.initialize_board()
+board = board_initialized[0]
+white_map = board_initialized[1]
+black_map = board_initialized[2]
 # Variable to keep our game loop running 
 running = True
 turn = True
@@ -46,6 +49,8 @@ dest = None
 clock = pygame.time.Clock()
 timer = 0
 available_moves = []
+white_king_pos = [0,4]
+black_king_pos = [7,4]
 # game loop 
 while running: 
     clock.tick(60)
@@ -58,12 +63,8 @@ while running:
             if (choice != False):
                 if (choice.piece != None and choice.piece.color == turn):
                     selected_piece = choice.piece
-                    print(type(selected_piece))
-                    print("piece picked")
-                    print(selected_piece.col)
-                    print(selected_piece.row)
-                    available_moves = selected_piece.available_moves(board)
-                    print(available_moves)
+                
+                    available_moves = selected_piece.available_moves(board,white_map,black_map)
                     if available_moves == []:
                         selected_piece = None
                         print("wrong piece dummy")
@@ -78,9 +79,7 @@ while running:
                 temp = selected_piece.col
                 selected_piece.col = selected_piece.row
                 selected_piece.row = temp
-                print((dest_choice.row,dest_choice.col))
-                print(selected_piece.available_moves(board))
-                print((dest_choice.row,dest_choice.col) in selected_piece.available_moves(board))
+                # print((dest_choice.row,dest_choice.col) in selected_piece.available_moves(board,white_map,black_map))
                 if ((dest_choice.row,dest_choice.col) in available_moves):
                     dest = dest_choice  
                     board[selected_piece.col][selected_piece.row].piece = None  
@@ -93,6 +92,13 @@ while running:
                          
     if (dest != None and selected_piece != None):
         board[selected_piece.col][selected_piece.row].piece = None
+        if(isinstance(selected_piece,main.King)):
+            if selected_piece.color:
+                white_king_pos[0] = dest.row
+                white_king_pos[1] = dest.col
+            else:
+                black_king_pos[0] = dest.row
+                black_king_pos[1] = dest.col    
         if (isinstance(selected_piece,main.Pawn)):
             selected_piece.has_moved = True
             if selected_piece.en_passant_possible:
@@ -109,7 +115,10 @@ while running:
         dest = None
         timer = 0
         turn = not turn
-        print("move made")
+        main.attack_map_update(board,white_map,black_map)
+        # print((2,0) in white_map)
+        # print(white_king_pos)
+        # print("move made")
      #Drawing
     pygame.display.flip() 
     screen.fill(background_colour) 

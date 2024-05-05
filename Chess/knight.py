@@ -10,7 +10,7 @@ class Knight(Piece):
     def __repr__(self):
         return self.__str__()
   
-    def available_moves(self, board):
+    def available_moves(self, board,white_map, black_map):
         temp = self.col
         self.col = self.row
         self.row = temp

@@ -20,5 +20,11 @@ class Piece:
   
   def get_image(self):
     return self.image
+  
+  def check_map(position, map):
+    for key, value in map.items():
+      if position in value[1]:
+        return True
+    return False
   # def available_moves(self):
   #   raise NotImplementedError("Subclasses must implement this method")

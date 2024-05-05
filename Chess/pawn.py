@@ -41,7 +41,7 @@ class Pawn(Piece):
     #                 if self.col +1 <7 and type(board[self.row+dr][self.col+1].piece) == Pawn and board[self.row + dr][self.col+1].piece.color != self.color:
     #                     res.append([self.row+1, self.col+1])
     #     return res
-    def available_moves(self, board):
+    def available_moves(self, board,white_map, black_map):
         temp = self.col
         self.col = self.row
         self.row = temp
