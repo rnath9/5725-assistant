@@ -4,8 +4,8 @@ from Chess.bishop import Bishop
 
 
 class Queen(Piece):
-  def __init__(self, color, position):
-    super().__init__(color, position,"queen")
+  def __init__(self, color, position,label):
+    super().__init__(color, position,"queen",label)
 
   def __str__(self):
     return "q"

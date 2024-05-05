@@ -95,6 +95,8 @@ while running:
                     print("NOT A LEGAL MOVE")    
                          
     if (dest != None and selected_piece != None):
+        white_check = False
+        black_check = False
         board[selected_piece.col][selected_piece.row].piece = None
         if(isinstance(selected_piece,main.King)):
             if selected_piece.color:
@@ -112,6 +114,16 @@ while running:
                 #en passant possible
                 selected_piece.en_passant_possible = True
                 # print("possible")
+        if (dest.piece != None):
+            #delete piece from map
+            if dest.piece.color:
+                name = dest.piece.label
+                del white_map[name]
+                print("deleted")
+            else:
+                name = dest.piece.label
+                del black_map[name]  
+                print("deleted")  
         dest.piece = selected_piece
         dest.piece.col = dest.col
         dest.piece.row = dest.row

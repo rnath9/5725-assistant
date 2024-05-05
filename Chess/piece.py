@@ -1,9 +1,10 @@
 import pygame
 class Piece:
-  def __init__(self, color, position, piece):
+  def __init__(self, color, position, piece,label):
     self.color = color
     self.row = position[0]
     self.col = position[1]
+    self.label = label
     if (color):
       cname = "white"
     else:

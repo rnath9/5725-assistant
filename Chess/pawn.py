@@ -2,8 +2,8 @@ from Chess.piece import Piece
 from Chess import main
 
 class Pawn(Piece):
-    def __init__(self, color, position):
-        super().__init__(color, position, "pawn")
+    def __init__(self, color, position,label):
+        super().__init__(color, position, "pawn",label)
         self.has_moved = False 
         self.en_passant_possible = False
 

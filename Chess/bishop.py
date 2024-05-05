@@ -1,8 +1,8 @@
 from Chess.piece import Piece
 from Chess import main
 class Bishop(Piece):
-    def __init__(self, color, position):
-        super().__init__(color, position,"bishop")
+    def __init__(self, color, position,label):
+        super().__init__(color, position,"bishop",label)
 
     def __str__(self):
         return "b"

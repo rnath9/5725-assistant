@@ -3,8 +3,8 @@ from Chess import main
 import copy
 
 class Knight(Piece):
-    def __init__(self, color, position):
-        super().__init__(color, position,"knight")
+    def __init__(self, color, position,label):
+        super().__init__(color, position,"knight",label)
 
     def __str__(self):
         return "n"

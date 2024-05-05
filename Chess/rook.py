@@ -1,8 +1,8 @@
 from Chess.piece import Piece
 from Chess import main
 class Rook(Piece):
-    def __init__(self, color, position):
-        super().__init__(color, position,"rook")
+    def __init__(self, color, position,label):
+        super().__init__(color, position,"rook",label)
 
     def __str__(self):
         return "r"
