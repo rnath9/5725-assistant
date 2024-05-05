@@ -1,4 +1,6 @@
 from Chess.piece import Piece
+from Chess import main
+import copy
 
 class Knight(Piece):
     def __init__(self, color, position):
@@ -10,7 +12,13 @@ class Knight(Piece):
     def __repr__(self):
         return self.__str__()
   
-    def available_moves(self, board,white_map, black_map):
+    def available_moves(self, board,white_map, black_map, w_king,b_king,pred):
+        if self.color:
+            king = w_king
+            map = black_map
+        else:
+            king = b_king
+            map = white_map
         temp = self.col
         self.col = self.row
         self.row = temp
@@ -20,11 +28,19 @@ class Knight(Piece):
             if self.row + dr <0 or self.row + dr >7 or self.col + dc <0 or self.col + dc >7:
                 continue
             if board[self.col + dc][self.row+dr].piece == None:
-                res.append((self.col + dc, self.row+ dr))
+                if pred:
+                    if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+dc,self.row+dr),(self.col,self.row)):
+                        res.append((self.col + dc, self.row+ dr))
+                else:
+                    res.append((self.col + dc, self.row+ dr))
             #piece present, can we capture it?
             if board[self.col + dc][self.row+dr].piece != None:
                 if board[self.col + dc][self.row+dr].piece.color != self.color:
-                    res.append((self.col + dc, self.row+dr)) # can take
+                    if pred:
+                        if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+dc,self.row+dr),(self.col,self.row)):
+                            res.append((self.col + dc, self.row+ dr))
+                    else:
+                        res.append((self.col + dc, self.row+ dr))
                 continue
         temp = self.col
         self.col = self.row

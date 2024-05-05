@@ -11,7 +11,7 @@ class King(Piece):
     def __repr__(self):
         return self.__str__()
     
-    def available_moves(self, board, white_map, black_map):
+    def available_moves(self, board, white_map, black_map,w_king,b_king,pred):
         if self.color:
             map = black_map
         else:

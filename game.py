@@ -64,7 +64,7 @@ while running:
                 if (choice.piece != None and choice.piece.color == turn):
                     selected_piece = choice.piece
                 
-                    available_moves = selected_piece.available_moves(board,white_map,black_map)
+                    available_moves = selected_piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True)
                     if available_moves == []:
                         selected_piece = None
                         print("wrong piece dummy")
@@ -115,7 +115,7 @@ while running:
         dest = None
         timer = 0
         turn = not turn
-        main.attack_map_update(board,white_map,black_map)
+        main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
         # print((2,0) in white_map)
         # print(white_king_pos)
         # print("move made")

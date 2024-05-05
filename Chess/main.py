@@ -48,19 +48,29 @@ def initialize_board():
       black_attack_map["queen"] = [board[r][3].piece, set()]
       black_attack_map["king"] = [board[r][4].piece, set()]
     for k,_ in white_attack_map.items():
-      white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
+      white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,(0,4),(7,4),False))
     for k,_ in black_attack_map.items():
-      black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
-  print(white_attack_map)
+      black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,(0,4),(7,4),False))
   return [board,white_attack_map,black_attack_map] 
 
-def attack_map_update(board,white_attack_map,black_attack_map):
+def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
   for k,_ in white_attack_map.items():
-    white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
+    white_attack_map[k][1] = set(white_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
   for k,_ in black_attack_map.items():
-    black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map))
-  print(Piece.check_map((5,0),black_attack_map))
-  
+    black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
+
+def predict(board,map,w_king,b_king, king,new_pos,og_pos):
+  old_piece = board[new_pos[0]][new_pos[1]].piece
+  board[new_pos[0]][new_pos[1]].piece = board[og_pos[0]][og_pos[1]].piece
+  board[og_pos[0]][og_pos[1]].piece = None
+  for k,_ in map.items():
+    map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
+  result = Piece.check_map(king,map)
+  board[og_pos[0]][og_pos[1]].piece = board[new_pos[0]][new_pos[1]].piece
+  board[new_pos[0]][new_pos[1]].piece = old_piece
+  for k,_ in map.items():
+    map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
+  return result
 
 def piece_at(board, x,y):
   if (x>220 or x<10):
