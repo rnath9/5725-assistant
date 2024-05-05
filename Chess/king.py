@@ -20,7 +20,7 @@ class King(Piece):
         self.col = self.row
         self.row = temp
         res = []
-        dirs = [[-1,1],[0,1],[1,1],[-1,0],[1,0],[1,-1],[-1,0],[-1,-1]]
+        dirs = [[-1,1],[0,1],[1,1],[-1,0],[1,0],[1,-1],[0,-1],[-1,-1]]
         for dr, dc in dirs:
             if self.row + dr <0 or self.row + dr >7 or self.col + dc <0 or self.col + dc >7:
                 continue
