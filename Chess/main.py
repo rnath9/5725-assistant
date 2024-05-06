@@ -26,19 +26,19 @@ def initialize_board():
       if r == 0:
         white_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
       else:
-        black_attack_map[f"rook{col}"] = [board[r][c].piece, set()]
+        black_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
     for c in [2,5]:
       board[r][c].piece = Bishop(True if r == 0 else False, [r,c],f"bishop{c}" if r== 0 else f"bishop{col}")
       if r == 0:
         white_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
       else:
-        black_attack_map[f"bishop{col}"] = [board[r][c].piece, set()]
+        black_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
     for c in [1,6]:
       board[r][c].piece = Knight(True if r == 0 else False, [r,c],f"knight{c}" if r== 0 else f"knight{col}")
       if r == 0:
         white_attack_map[f"knight{c}"] = [board[r][c].piece, set()]
       else:
-        black_attack_map[f"knight{col}"] = [board[r][c].piece, set()]
+        black_attack_map[f"knight{c}"] = [board[r][c].piece, set()]
     board[r][3].piece = Queen(True if r == 0 else False, [r,3],"queen")
     board[r][4].piece = King(True if r == 0 else False, [r,4],"king")
     if r == 0:
