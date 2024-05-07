@@ -4,6 +4,7 @@ from vosk import Model, KaldiRecognizer
 import json
 import pyttsx3
 import weather
+import jokes
 engine = pyttsx3.init()
 engine.setProperty('voice',"english")
 engine.setProperty('rate',120)
@@ -27,8 +28,7 @@ while loop_running:
         print(keyword)
         if ("mongo" in keyword):    
             print("WASSUP")
-            engine.say("Yes?")
-            engine.runAndWait()
+        
             print("ready")
             while True:
                 data = stream.read(4096, exception_on_overflow=False)
@@ -46,6 +46,8 @@ while loop_running:
                     else:
                         if match == 'weather':
                             engine.say(weather.get_weather_results(t))
+                        elif match == 'joke':
+                            engine.say(jokes.get_joke())
                         elif match == 'close':
                             engine.say("we over")
                             engine.runAndWait()
