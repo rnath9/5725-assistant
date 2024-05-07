@@ -10,18 +10,18 @@ try:
     import led
 except:
     RPi = False
-if RPi:
-    led.setup_LED()
+else:
+    RPi = True
 
 engine = pyttsx3.init()
 engine.setProperty('voice',"english")
 engine.setProperty('rate',120)
 
 model = Model('vosk-model-small-en-us-0.15')
-recognizer = KaldiRecognizer(model, 16000)
+recognizer = KaldiRecognizer(model, 44100)
 
 cap = pyaudio.PyAudio()
-stream = cap.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True,frames_per_buffer=8192)
+stream = cap.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True,frames_per_buffer=8192)
 stream.start_stream()
 with open("resources/prompts.json", "rb") as f:
     prompt_map = json.load(f)
@@ -30,14 +30,17 @@ ITHACA_LOCATION = (42.440498, -76.495697)
 
 loop_running = True
 while loop_running:
-    data_initial = stream.read(2048, exception_on_overflow=False)
+    data_initial = stream.read(8192, exception_on_overflow=False)
     if recognizer.AcceptWaveform(data_initial):
         keyword = recognizer.Result()
         print(keyword)
         if ("mongo" in keyword):    
-            print("Listening")
+            print(RPi)
             if RPi:
+                print("light")
                 led.turn_LED_on()
+            else:
+                print("not RPi")
             while True:
                 data = stream.read(4096, exception_on_overflow=False)
                 if recognizer.AcceptWaveform(data):
