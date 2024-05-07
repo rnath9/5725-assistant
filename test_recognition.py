@@ -5,6 +5,14 @@ import json
 import pyttsx3
 import weather
 import jokes
+RPi = True
+try:
+    import led
+except:
+    RPi = False
+if RPi:
+    led.setup_LED()
+
 engine = pyttsx3.init()
 engine.setProperty('voice',"english")
 engine.setProperty('rate',120)
@@ -27,12 +35,14 @@ while loop_running:
         keyword = recognizer.Result()
         print(keyword)
         if ("mongo" in keyword):    
-            print("WASSUP")
-        
-            print("ready")
+            print("Listening")
+            if RPi:
+                led.turn_LED_on()
             while True:
                 data = stream.read(4096, exception_on_overflow=False)
                 if recognizer.AcceptWaveform(data):
+                    if RPi:
+                        led.turn_LED_off()
                     t = (recognizer.Result())[14:-3]
                     match = None
                     for k,v in prompt_map.items():
@@ -57,3 +67,5 @@ while loop_running:
                             engine.say("unimplemented command")
                     engine.runAndWait()
                     break
+if RPi:
+    led.setup_LED()
