@@ -53,6 +53,8 @@ timer = 0
 available_moves = []
 white_king_pos = [0,4]
 black_king_pos = [7,4]
+num_white_promoted = 0
+num_black_promoted = 0
 white_check = False
 black_check = False
 # game loop 
@@ -129,6 +131,20 @@ while running:
         dest.piece.row = dest.row
         selected_piece = None
         dest = None
+        pawn_promoted = main.pawn_promote(board,turn, num_white_promoted if turn else num_black_promoted)
+        if pawn_promoted:
+            name = pawn_promoted[0].piece.label
+            old_name = pawn_promoted[1]
+            if turn:
+                num_white_promoted += 1
+                del white_map[old_name]
+                white_map[name] = [pawn_promoted[0].piece, set()]
+                white_map[name][1] = set(white_map[name][0].available_moves(board,white_map,black_map,white_king_pos,black_king_pos, False))
+            else:
+                num_black_promoted += 1
+                del black_map[old_name]
+                black_map[name] = [pawn_promoted[0].piece, set()]
+                black_map[name][1] = set(black_map[name][0].available_moves(board,white_map,black_map,white_king_pos,black_king_pos, False))
         timer = 0
         turn = not turn
         main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)

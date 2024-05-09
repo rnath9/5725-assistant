@@ -22,19 +22,19 @@ def initialize_board():
     black_attack_map[f"pawn{col}"] = [board[6][col].piece, set()]
   for r in [0,7]:
     for c in [0,7]:
-      board[r][c].piece = Rook(True if r == 0 else False, [r,c],f"rook{c}" if r== 0 else f"rook{col}")
+      board[r][c].piece = Rook(True if r == 0 else False, [r,c],f"rook{c}" if r== 0 else f"rook{c}")
       if r == 0:
         white_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
       else:
         black_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
     for c in [2,5]:
-      board[r][c].piece = Bishop(True if r == 0 else False, [r,c],f"bishop{c}" if r== 0 else f"bishop{col}")
+      board[r][c].piece = Bishop(True if r == 0 else False, [r,c],f"bishop{c}" if r== 0 else f"bishop{c}")
       if r == 0:
         white_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
       else:
         black_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
     for c in [1,6]:
-      board[r][c].piece = Knight(True if r == 0 else False, [r,c],f"knight{c}" if r== 0 else f"knight{col}")
+      board[r][c].piece = Knight(True if r == 0 else False, [r,c],f"knight{c}" if r== 0 else f"knight{c}")
       if r == 0:
         white_attack_map[f"knight{c}"] = [board[r][c].piece, set()]
       else:
@@ -62,7 +62,6 @@ def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
   for k,_ in black_attack_map.items():
     if (isinstance(black_attack_map[k][0], Pawn)):
       black_attack_map[k][1] = set(black_attack_map[k][0].available_pawn_attack(board,white_attack_map,black_attack_map,w_king,b_king, False))
-
     else:
       black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
 
@@ -78,6 +77,14 @@ def predict(board,map,w_king,b_king, king,new_pos,og_pos):
   for k,_ in map.items():
     map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
   return result
+
+def pawn_promote(board, turn, num_promoted):
+    for cell in board[7 if turn else 0]:
+      if isinstance(cell.piece, Pawn):
+        old_name = cell.piece.label
+        cell.piece = Queen(turn, [7 if turn else 0, cell.col], f"queen_p{num_promoted}")
+        return cell, old_name
+    return None
 
 def piece_at(board, x,y):
   if (x>=220 or x<=10):
