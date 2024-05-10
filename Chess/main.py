@@ -86,6 +86,14 @@ def predict(board,map,w_king,b_king, king,new_pos,og_pos):
     map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
   return result
 
+def pawn_promote(board, turn, num_promoted):
+    for cell in board[7 if turn else 0]:
+      if isinstance(cell.piece, Pawn):
+        old_name = cell.piece.label
+        cell.piece = Queen(turn, [7 if turn else 0, cell.col], f"queen_p{num_promoted}")
+        return cell, old_name
+    return None
+
 def piece_at(board, x,y):
   if (x>=220 or x<=10):
     return False
