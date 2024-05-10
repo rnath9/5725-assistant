@@ -97,33 +97,68 @@ while running:
     if (dest != None and selected_piece != None):
         white_check = False
         black_check = False
+        if (turn):
+            for x in board:
+                for y in x:
+                    if y.piece!= None:
+                        if not y.piece.color:
+                            if isinstance(y.piece,main.Pawn):
+                                y.piece.en_passant_possible = False
+        else: 
+            for x in board:
+                for y in x:
+                    if y.piece!= None:
+                        if y.piece.color:
+                            if isinstance(y.piece,main.Pawn):
+                                y.piece.en_passant_possible = False   
         board[selected_piece.col][selected_piece.row].piece = None
         if(isinstance(selected_piece,main.King)):
+            selected_piece.has_moved = True
             if selected_piece.color:
                 white_king_pos[0] = dest.row
                 white_king_pos[1] = dest.col
             else:
                 black_king_pos[0] = dest.row
-                black_king_pos[1] = dest.col    
+                black_king_pos[1] = dest.col  
+            if abs(selected_piece.row - dest.col)>1:
+                if dest.col >4:
+                    if turn:
+                        board[0][5].piece = board[0][7].piece
+                        board[0][7].piece = None
+                    else:
+                        board[7][5].piece = board[7][7].piece
+                        board[7][7].piece = None   
+                else:
+                    if turn:
+                        board[0][3].piece = board[0][0].piece
+                        board[0][0].piece = None
+                    else:
+                        board[7][3].piece = board[7][0].piece
+                        board[7][0].piece = None 
+              
         if (isinstance(selected_piece,main.Pawn)):
             selected_piece.has_moved = True
-            if selected_piece.en_passant_possible:
-                selected_piece.en_passant_possible = False
-                # print("used")
             if abs(selected_piece.col - dest.row)>1:
                 #en passant possible
                 selected_piece.en_passant_possible = True
                 # print("possible")
+                if (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
+                    name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
+                    if turn:
+                        del black_map[name]
+                    else:
+                        del white_map[name]  
+            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
+        if (isinstance(selected_piece,main.Rook)):
+            selected_piece.has_moved = True
         if (dest.piece != None):
             #delete piece from map
             if dest.piece.color:
                 name = dest.piece.label
                 del white_map[name]
-                print("deleted")
             else:
                 name = dest.piece.label
-                del black_map[name]  
-                print("deleted")  
+                del black_map[name]     
         dest.piece = selected_piece
         dest.piece.col = dest.col
         dest.piece.row = dest.row

@@ -82,6 +82,17 @@ class Pawn(Piece):
                             res.append((self.col +direction, self.row+dc))
                     else:
                         res.append((self.col + direction, self.row+dc))
+        if (self.color and (self.col == 4)) or ((not self.color) and (self.col == 3)):
+            for dc in [-1,1]:
+                if 0 <= self.col + direction < 8 and 0 <= self.row + dc < 8:
+                    target_square = board[self.col + direction][self.row+dc]
+                    target = board[self.col][self.row+dc]
+                    if target.piece != None and target_square.piece == None and isinstance(target.piece,Pawn) and target.piece.en_passant_possible:
+                        if pred:
+                            if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+direction,self.row+dc),(self.col,self.row)):
+                                res.append((self.col+direction, self.row+dc))
+                        else:
+                            res.append((self.col+direction, self.row+dc))
         temp = self.col
         self.col = self.row
         self.row = temp
@@ -118,6 +129,21 @@ class Pawn(Piece):
                             res.append((self.col +direction, self.row+dc))
                     else:
                         res.append((self.col + direction, self.row+dc))
+        
+        #En Passant (GOD I HATE THIS MOVE)
+        if (self.color and self.col == 4) or (not self.color and self.col == 3):
+            # print("hello")
+            for dc in [-1,1]:
+                if 0 <= self.col + direction < 8 and 0 <= self.row + dc < 8:
+                    target_square = board[self.col + direction][self.row+dc]
+                    target = board[self.col+direction][self.row]
+                    if target.piece != None and target_square.piece == None and isinstance(target.piece,Pawn) and target.piece.en_passant_possible:
+                        if pred:
+                            if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+direction,self.row+dc),(self.col,self.row)):
+                                res.append((self.col +direction, self.row+dc))
+                        else:
+                            res.append((self.col + direction, self.row+dc))
+
         temp = self.col
         self.col = self.row
         self.row = temp

@@ -62,7 +62,6 @@ def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
   for k,_ in black_attack_map.items():
     if (isinstance(black_attack_map[k][0], Pawn)):
       black_attack_map[k][1] = set(black_attack_map[k][0].available_pawn_attack(board,white_attack_map,black_attack_map,w_king,b_king, False))
-
     else:
       black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
 
@@ -70,7 +69,6 @@ def predict(board,map,w_king,b_king, king,new_pos,og_pos):
   changed = False
   old_piece = board[new_pos[0]][new_pos[1]].piece
   if (board[new_pos[0]][new_pos[1]].piece != None):
-    print("HEY")
     name = board[new_pos[0]][new_pos[1]].piece.label
     del map[name]
     changed = True
