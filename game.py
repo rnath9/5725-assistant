@@ -169,8 +169,24 @@ while running:
         main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
         if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
             white_check = True
+            mate = True
+            for x in board:
+                for y in x:
+                    if y.piece !=None and y.piece.color:
+                        if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
+                            mate = False
+            if mate:
+                print("CHECKMATE, BLACK WINS")                
         if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
             black_check = True
+            mate = True
+            for x in board:
+                for y in x:
+                    if y.piece !=None and not y.piece.color:
+                        if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
+                            mate = False
+            if mate:
+                print("CHECKMATE, WHITE WINS") 
         print(white_map)
         print(black_map)
         # print((2,0) in white_map)

@@ -67,7 +67,11 @@ class Rook(Piece):
             if self.row + dr < 0:
                 break
             if board[self.row + dr][self.col].piece is None:
-                res.append((self.row + dr, self.col))
+                if pred:
+                    if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.row+dr,self.col),(self.row,self.col)):
+                        res.append((self.row+dr, self.col))
+                else:
+                    res.append((self.row+dr, self.col))
             else:
                 if board[self.row + dr][self.col].piece.color != self.color:
                     if pred:
