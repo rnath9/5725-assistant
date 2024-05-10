@@ -22,19 +22,19 @@ def initialize_board():
     black_attack_map[f"pawn{col}"] = [board[6][col].piece, set()]
   for r in [0,7]:
     for c in [0,7]:
-      board[r][c].piece = Rook(True if r == 0 else False, [r,c],f"rook{c}" if r== 0 else f"rook{col}")
+      board[r][c].piece = Rook(True if r == 0 else False, [r,c],f"rook{c}" if r== 0 else f"rook{c}")
       if r == 0:
         white_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
       else:
         black_attack_map[f"rook{c}"] = [board[r][c].piece, set()]
     for c in [2,5]:
-      board[r][c].piece = Bishop(True if r == 0 else False, [r,c],f"bishop{c}" if r== 0 else f"bishop{col}")
+      board[r][c].piece = Bishop(True if r == 0 else False, [r,c],f"bishop{c}" if r== 0 else f"bishop{c}")
       if r == 0:
         white_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
       else:
         black_attack_map[f"bishop{c}"] = [board[r][c].piece, set()]
     for c in [1,6]:
-      board[r][c].piece = Knight(True if r == 0 else False, [r,c],f"knight{c}" if r== 0 else f"knight{col}")
+      board[r][c].piece = Knight(True if r == 0 else False, [r,c],f"knight{c}" if r== 0 else f"knight{c}")
       if r == 0:
         white_attack_map[f"knight{c}"] = [board[r][c].piece, set()]
       else:
@@ -67,14 +67,23 @@ def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
       black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
 
 def predict(board,map,w_king,b_king, king,new_pos,og_pos):
+  changed = False
   old_piece = board[new_pos[0]][new_pos[1]].piece
+  if (board[new_pos[0]][new_pos[1]].piece != None):
+    print("HEY")
+    name = board[new_pos[0]][new_pos[1]].piece.label
+    del map[name]
+    changed = True
   board[new_pos[0]][new_pos[1]].piece = board[og_pos[0]][og_pos[1]].piece
   board[og_pos[0]][og_pos[1]].piece = None
   for k,_ in map.items():
     map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
   result = Piece.check_map(king,map)
+
   board[og_pos[0]][og_pos[1]].piece = board[new_pos[0]][new_pos[1]].piece
   board[new_pos[0]][new_pos[1]].piece = old_piece
+  if changed:
+    map[name] = [board[new_pos[0]][new_pos[1]].piece, set()]
   for k,_ in map.items():
     map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
   return result
