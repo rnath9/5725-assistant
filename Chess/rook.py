@@ -3,6 +3,7 @@ from Chess import main
 class Rook(Piece):
     def __init__(self, color, position,label):
         super().__init__(color, position,"rook",label)
+        self.has_moved = False
 
     def __str__(self):
         return "r"

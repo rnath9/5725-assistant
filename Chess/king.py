@@ -4,6 +4,7 @@ class King(Piece):
 
     def __init__(self, color, position,label):
         super().__init__(color, position,"king",label)
+        self.has_moved = False
 
     def __str__(self):
         return "k"

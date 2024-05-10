@@ -113,6 +113,7 @@ while running:
                                 y.piece.en_passant_possible = False   
         board[selected_piece.col][selected_piece.row].piece = None
         if(isinstance(selected_piece,main.King)):
+            selected_piece.has_moved = True
             if selected_piece.color:
                 white_king_pos[0] = dest.row
                 white_king_pos[1] = dest.col
@@ -125,6 +126,13 @@ while running:
                 #en passant possible
                 selected_piece.en_passant_possible = True
                 # print("possible")
+                if (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
+                    name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
+                    if turn:
+                        del black_map[name]
+                    else:
+                        del white_map[name]  
+            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None     
         if (dest.piece != None):
             #delete piece from map
             if dest.piece.color:
@@ -132,14 +140,7 @@ while running:
                 del white_map[name]
             else:
                 name = dest.piece.label
-                del black_map[name]
-        elif (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
-            name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
-            if turn:
-                del black_map[name]
-            else:
-                del white_map[name]  
-            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None      
+                del black_map[name]     
         dest.piece = selected_piece
         dest.piece.col = dest.col
         dest.piece.row = dest.row
