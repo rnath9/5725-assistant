@@ -62,7 +62,6 @@ def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
   for k,_ in black_attack_map.items():
     if (isinstance(black_attack_map[k][0], Pawn)):
       black_attack_map[k][1] = set(black_attack_map[k][0].available_pawn_attack(board,white_attack_map,black_attack_map,w_king,b_king, False))
-
     else:
       black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
 

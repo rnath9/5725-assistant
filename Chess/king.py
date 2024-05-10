@@ -1,4 +1,5 @@
 from Chess.piece import Piece
+from Chess.rook import Rook
 
 class King(Piece):
 
@@ -35,6 +36,19 @@ class King(Piece):
                 if board[self.col + dc][self.row+dr].piece.color != self.color:
                     res.append((self.col + dc, self.row+dr)) # can take
                 continue
+        if (not Piece.check_map((self.col,self.row),map) and not self.has_moved):
+            possible = True
+            for x in [1,2]:
+                if board[self.col][self.row+x].piece != None or Piece.check_map((self.col,self.row+x),map):
+                    possible = False
+            if board[self.col][self.row+3].piece != None and isinstance(board[self.col][self.row+3].piece,Rook) and not board[self.col][self.row+3].piece.has_moved and possible:  
+                res.append((self.col, self.row+2))
+            possible = True    
+            for x in [-1,-2,-3]:
+                if board[self.col][self.row+x].piece != None or (x != -3 and Piece.check_map((self.col,self.row+x),map)):
+                    possible = False   
+            if board[self.col][self.row-4].piece != None and isinstance(board[self.col][self.row-4].piece,Rook) and not board[self.col][self.row-4].piece.has_moved and possible:  
+                res.append((self.col, self.row-2))    
         temp = self.col
         self.col = self.row
         self.row = temp

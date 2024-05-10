@@ -119,7 +119,23 @@ while running:
                 white_king_pos[1] = dest.col
             else:
                 black_king_pos[0] = dest.row
-                black_king_pos[1] = dest.col    
+                black_king_pos[1] = dest.col  
+            if abs(selected_piece.row - dest.col)>1:
+                if dest.col >4:
+                    if turn:
+                        board[0][5].piece = board[0][7].piece
+                        board[0][7].piece = None
+                    else:
+                        board[7][5].piece = board[7][7].piece
+                        board[7][7].piece = None   
+                else:
+                    if turn:
+                        board[0][3].piece = board[0][0].piece
+                        board[0][0].piece = None
+                    else:
+                        board[7][3].piece = board[7][0].piece
+                        board[7][0].piece = None 
+              
         if (isinstance(selected_piece,main.Pawn)):
             selected_piece.has_moved = True
             if abs(selected_piece.col - dest.row)>1:
@@ -132,7 +148,9 @@ while running:
                         del black_map[name]
                     else:
                         del white_map[name]  
-            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None     
+            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
+        if (isinstance(selected_piece,main.Rook)):
+            selected_piece.has_moved = True
         if (dest.piece != None):
             #delete piece from map
             if dest.piece.color:
