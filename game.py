@@ -5,9 +5,12 @@ from Chess.piece import Piece
   
 # Define the background colour 
 # using RGB color coding. 
+pygame.init()
 background_colour = (234, 212, 252) 
 blue = (0,0,255)
 red = (255,0,0)
+BLACK = (0,0,0)
+font = pygame.font.Font(None, 32)
   
 # Define the dimensions of 
 # screen object(width,height) 
@@ -55,140 +58,143 @@ white_king_pos = [0,4]
 black_king_pos = [7,4]
 white_check = False
 black_check = False
+white_mate = False
+black_mate = False
 # game loop 
 while running: 
     clock.tick(60)
     timer += clock.get_time()
     #logic
-    if (selected_piece == None and timer>500):
-        mouse_pos = pygame.mouse.get_pos()
-        if (pygame.mouse.get_pressed()[0]):
-            choice = main.piece_at(board,mouse_pos[1],mouse_pos[0])
-            if (choice != False):
-                if (choice.piece != None and choice.piece.color == turn):
-                    selected_piece = choice.piece
-                
-                    available_moves = selected_piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True)
-                    if available_moves == []:
-                        selected_piece = None
-                        print("wrong piece dummy")
-                    timer = 0
+    if not white_mate and not black_mate:
+        if (selected_piece == None and timer>500):
+            mouse_pos = pygame.mouse.get_pos()
+            if (pygame.mouse.get_pressed()[0]):
+                choice = main.piece_at(board,mouse_pos[1],mouse_pos[0])
+                if (choice != False):
+                    if (choice.piece != None and choice.piece.color == turn):
+                        selected_piece = choice.piece
                     
-    
-    if (dest == None and selected_piece != None and timer>500):
-        mouse_pos = pygame.mouse.get_pos() 
-        if (pygame.mouse.get_pressed()[0]): 
-            dest_choice = main.tile_at(board,mouse_pos[1],mouse_pos[0])
-            if (dest_choice!=False):
-                temp = selected_piece.col
-                selected_piece.col = selected_piece.row
-                selected_piece.row = temp
-                # print((dest_choice.row,dest_choice.col) in selected_piece.available_moves(board,white_map,black_map))
-                if ((dest_choice.row,dest_choice.col) in available_moves):
-                    dest = dest_choice  
-                    board[selected_piece.col][selected_piece.row].piece = None  
-                else:
+                        available_moves = selected_piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True)
+                        if available_moves == []:
+                            selected_piece = None
+                            print("wrong piece dummy")
+                        timer = 0
+                        
+        
+        if (dest == None and selected_piece != None and timer>500):
+            mouse_pos = pygame.mouse.get_pos() 
+            if (pygame.mouse.get_pressed()[0]): 
+                dest_choice = main.tile_at(board,mouse_pos[1],mouse_pos[0])
+                if (dest_choice!=False):
                     temp = selected_piece.col
                     selected_piece.col = selected_piece.row
                     selected_piece.row = temp
-                    selected_piece = None
-                    print("NOT A LEGAL MOVE")    
-                         
-    if (dest != None and selected_piece != None):
-        white_check = False
-        black_check = False
-        if (turn):
-            for x in board:
-                for y in x:
-                    if y.piece!= None:
-                        if not y.piece.color:
-                            if isinstance(y.piece,main.Pawn):
-                                y.piece.en_passant_possible = False
-        else: 
-            for x in board:
-                for y in x:
-                    if y.piece!= None:
-                        if y.piece.color:
-                            if isinstance(y.piece,main.Pawn):
-                                y.piece.en_passant_possible = False   
-        board[selected_piece.col][selected_piece.row].piece = None
-        if(isinstance(selected_piece,main.King)):
-            selected_piece.has_moved = True
-            if selected_piece.color:
-                white_king_pos[0] = dest.row
-                white_king_pos[1] = dest.col
-            else:
-                black_king_pos[0] = dest.row
-                black_king_pos[1] = dest.col  
-            if abs(selected_piece.row - dest.col)>1:
-                if dest.col >4:
-                    if turn:
-                        board[0][5].piece = board[0][7].piece
-                        board[0][7].piece = None
+                    # print((dest_choice.row,dest_choice.col) in selected_piece.available_moves(board,white_map,black_map))
+                    if ((dest_choice.row,dest_choice.col) in available_moves):
+                        dest = dest_choice  
+                        board[selected_piece.col][selected_piece.row].piece = None  
                     else:
-                        board[7][5].piece = board[7][7].piece
-                        board[7][7].piece = None   
+                        temp = selected_piece.col
+                        selected_piece.col = selected_piece.row
+                        selected_piece.row = temp
+                        selected_piece = None
+                        print("NOT A LEGAL MOVE")    
+                            
+        if (dest != None and selected_piece != None):
+            white_check = False
+            black_check = False
+            if (turn):
+                for x in board:
+                    for y in x:
+                        if y.piece!= None:
+                            if not y.piece.color:
+                                if isinstance(y.piece,main.Pawn):
+                                    y.piece.en_passant_possible = False
+            else: 
+                for x in board:
+                    for y in x:
+                        if y.piece!= None:
+                            if y.piece.color:
+                                if isinstance(y.piece,main.Pawn):
+                                    y.piece.en_passant_possible = False   
+            board[selected_piece.col][selected_piece.row].piece = None
+            if(isinstance(selected_piece,main.King)):
+                selected_piece.has_moved = True
+                if selected_piece.color:
+                    white_king_pos[0] = dest.row
+                    white_king_pos[1] = dest.col
                 else:
-                    if turn:
-                        board[0][3].piece = board[0][0].piece
-                        board[0][0].piece = None
+                    black_king_pos[0] = dest.row
+                    black_king_pos[1] = dest.col  
+                if abs(selected_piece.row - dest.col)>1:
+                    if dest.col >4:
+                        if turn:
+                            board[0][5].piece = board[0][7].piece
+                            board[0][7].piece = None
+                        else:
+                            board[7][5].piece = board[7][7].piece
+                            board[7][7].piece = None   
                     else:
-                        board[7][3].piece = board[7][0].piece
-                        board[7][0].piece = None 
-              
-        if (isinstance(selected_piece,main.Pawn)):
-            selected_piece.has_moved = True
-            if abs(selected_piece.col - dest.row)>1:
-                #en passant possible
-                selected_piece.en_passant_possible = True
-                # print("possible")
-                if (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
-                    name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
-                    if turn:
-                        del black_map[name]
-                    else:
-                        del white_map[name]  
-            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
-        if (isinstance(selected_piece,main.Rook)):
-            selected_piece.has_moved = True
-        if (dest.piece != None):
-            #delete piece from map
-            if dest.piece.color:
-                name = dest.piece.label
-                del white_map[name]
-            else:
-                name = dest.piece.label
-                del black_map[name]     
-        dest.piece = selected_piece
-        dest.piece.col = dest.col
-        dest.piece.row = dest.row
-        selected_piece = None
-        dest = None
-        timer = 0
-        turn = not turn
-        main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
-        if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
-            white_check = True
-            mate = True
-            for x in board:
-                for y in x:
-                    if y.piece !=None and y.piece.color:
-                        if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
-                            mate = False
-            if mate:
-                print("CHECKMATE, BLACK WINS")                
-        if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
-            black_check = True
-            mate = True
-            for x in board:
-                for y in x:
-                    if y.piece !=None and not y.piece.color:
-                        if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
-                            mate = False
-            if mate:
-                print("CHECKMATE, WHITE WINS") 
-        print(white_map)
-        print(black_map)
+                        if turn:
+                            board[0][3].piece = board[0][0].piece
+                            board[0][0].piece = None
+                        else:
+                            board[7][3].piece = board[7][0].piece
+                            board[7][0].piece = None 
+                
+            if (isinstance(selected_piece,main.Pawn)):
+                selected_piece.has_moved = True
+                if abs(selected_piece.col - dest.row)>1:
+                    #en passant possible
+                    selected_piece.en_passant_possible = True
+                    # print("possible")
+                    if (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
+                        name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
+                        if turn:
+                            del black_map[name]
+                        else:
+                            del white_map[name]  
+                board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
+            if (isinstance(selected_piece,main.Rook)):
+                selected_piece.has_moved = True
+            if (dest.piece != None):
+                #delete piece from map
+                if dest.piece.color:
+                    name = dest.piece.label
+                    del white_map[name]
+                else:
+                    name = dest.piece.label
+                    del black_map[name]     
+            dest.piece = selected_piece
+            dest.piece.col = dest.col
+            dest.piece.row = dest.row
+            selected_piece = None
+            dest = None
+            timer = 0
+            turn = not turn
+            main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
+            if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
+                white_check = True
+                white_mate = True
+                for x in board:
+                    for y in x:
+                        if y.piece !=None and y.piece.color:
+                            if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
+                                white_mate = False
+                if white_mate:
+                    print("CHECKMATE, BLACK WINS")                
+            if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
+                black_check = True
+                black_mate = True
+                for x in board:
+                    for y in x:
+                        if y.piece !=None and not y.piece.color:
+                            if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
+                                black_mate = False
+                if black_mate:
+                    print("CHECKMATE, WHITE WINS") 
+            print(white_map)
+            print(black_map)
         # print((2,0) in white_map)
         # print(white_king_pos)
         # print("move made")
@@ -220,6 +226,28 @@ while running:
             if square.piece != None:
                 image = square.get_image()
                 screen.blit(image,(j*27+55,i*27+12))
+    if white_mate:
+        text = font.render("CHECKMATE: BLACK WINS", True, BLACK)
+
+        # Get the rectangle object that has the dimensions of the text surface
+        text_rect = text.get_rect()
+
+        # Center the text
+        text_rect.center = (screen_width // 2, screen_height // 2)
+
+        # Blit the text surface onto the screen
+        screen.blit(text, text_rect)
+    if black_mate:
+        text = font.render("CHECKMATE: WHITE WINS", True, BLACK)
+
+        # Get the rectangle object that has the dimensions of the text surface
+        text_rect = text.get_rect()
+
+        # Center the text
+        text_rect.center = (screen_width // 2, screen_height // 2)
+
+        # Blit the text surface onto the screen
+        screen.blit(text, text_rect)
     for event in pygame.event.get(): 
     
         # Check for QUIT event       
