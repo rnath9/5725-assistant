@@ -71,4 +71,4 @@ while loop_running:
                     engine.runAndWait()
                     break
 if RPi:
-    led.setup_LED()
+    led.shutdown_LED()
