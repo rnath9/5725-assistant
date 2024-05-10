@@ -70,7 +70,6 @@ def predict(board,map,w_king,b_king, king,new_pos,og_pos):
   changed = False
   old_piece = board[new_pos[0]][new_pos[1]].piece
   if (board[new_pos[0]][new_pos[1]].piece != None):
-    print("HEY")
     name = board[new_pos[0]][new_pos[1]].piece.label
     del map[name]
     changed = True

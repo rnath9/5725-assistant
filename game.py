@@ -97,6 +97,20 @@ while running:
     if (dest != None and selected_piece != None):
         white_check = False
         black_check = False
+        if (turn):
+            for x in board:
+                for y in x:
+                    if y.piece!= None:
+                        if not y.piece.color:
+                            if isinstance(y.piece,main.Pawn):
+                                y.piece.en_passant_possible = False
+        else: 
+            for x in board:
+                for y in x:
+                    if y.piece!= None:
+                        if y.piece.color:
+                            if isinstance(y.piece,main.Pawn):
+                                y.piece.en_passant_possible = False   
         board[selected_piece.col][selected_piece.row].piece = None
         if(isinstance(selected_piece,main.King)):
             if selected_piece.color:
@@ -107,9 +121,6 @@ while running:
                 black_king_pos[1] = dest.col    
         if (isinstance(selected_piece,main.Pawn)):
             selected_piece.has_moved = True
-            if selected_piece.en_passant_possible:
-                selected_piece.en_passant_possible = False
-                # print("used")
             if abs(selected_piece.col - dest.row)>1:
                 #en passant possible
                 selected_piece.en_passant_possible = True
@@ -119,11 +130,16 @@ while running:
             if dest.piece.color:
                 name = dest.piece.label
                 del white_map[name]
-                print("deleted")
             else:
                 name = dest.piece.label
-                del black_map[name]  
-                print("deleted")  
+                del black_map[name]
+        elif (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
+            name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
+            if turn:
+                del black_map[name]
+            else:
+                del white_map[name]  
+            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None      
         dest.piece = selected_piece
         dest.piece.col = dest.col
         dest.piece.row = dest.row
