@@ -1,11 +1,13 @@
 # import the pygame module 
 import pygame 
 from Chess import main
+from Chess.piece import Piece
   
 # Define the background colour 
 # using RGB color coding. 
 background_colour = (234, 212, 252) 
 blue = (0,0,255)
+red = (255,0,0)
   
 # Define the dimensions of 
 # screen object(width,height) 
@@ -51,6 +53,8 @@ timer = 0
 available_moves = []
 white_king_pos = [0,4]
 black_king_pos = [7,4]
+white_check = False
+black_check = False
 # game loop 
 while running: 
     clock.tick(60)
@@ -64,7 +68,7 @@ while running:
                 if (choice.piece != None and choice.piece.color == turn):
                     selected_piece = choice.piece
                 
-                    available_moves = selected_piece.available_moves(board,white_map,black_map)
+                    available_moves = selected_piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True)
                     if available_moves == []:
                         selected_piece = None
                         print("wrong piece dummy")
@@ -91,6 +95,8 @@ while running:
                     print("NOT A LEGAL MOVE")    
                          
     if (dest != None and selected_piece != None):
+        white_check = False
+        black_check = False
         board[selected_piece.col][selected_piece.row].piece = None
         if(isinstance(selected_piece,main.King)):
             if selected_piece.color:
@@ -108,6 +114,16 @@ while running:
                 #en passant possible
                 selected_piece.en_passant_possible = True
                 # print("possible")
+        if (dest.piece != None):
+            #delete piece from map
+            if dest.piece.color:
+                name = dest.piece.label
+                del white_map[name]
+                print("deleted")
+            else:
+                name = dest.piece.label
+                del black_map[name]  
+                print("deleted")  
         dest.piece = selected_piece
         dest.piece.col = dest.col
         dest.piece.row = dest.row
@@ -115,7 +131,13 @@ while running:
         dest = None
         timer = 0
         turn = not turn
-        main.attack_map_update(board,white_map,black_map)
+        main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
+        if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
+            white_check = True
+        if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
+            black_check = True
+        print(white_map)
+        print(black_map)
         # print((2,0) in white_map)
         # print(white_king_pos)
         # print("move made")
@@ -136,7 +158,10 @@ while running:
     if selected_piece != None:
         for x in available_moves:
             pygame.draw.rect(screen, blue, (x[1]*27 + 53, x[0]*27+11, 25, 25))
-
+    if white_check:
+        pygame.draw.rect(screen, red, (white_king_pos[1]*27 + 53, white_king_pos[0]*27+11, 25, 25))
+    if black_check:
+        pygame.draw.rect(screen, red, (black_king_pos[1]*27 + 53, black_king_pos[0]*27+11, 25, 25))
 
     for i in range(len(board)):
         for j in range(len(board[0])):

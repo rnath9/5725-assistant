@@ -2,8 +2,8 @@ from Chess.piece import Piece
 
 class King(Piece):
 
-    def __init__(self, color, position):
-        super().__init__(color, position,"king")
+    def __init__(self, color, position,label):
+        super().__init__(color, position,"king",label)
 
     def __str__(self):
         return "k"
@@ -11,7 +11,7 @@ class King(Piece):
     def __repr__(self):
         return self.__str__()
     
-    def available_moves(self, board, white_map, black_map):
+    def available_moves(self, board, white_map, black_map,w_king,b_king,pred):
         if self.color:
             map = black_map
         else:
@@ -20,7 +20,7 @@ class King(Piece):
         self.col = self.row
         self.row = temp
         res = []
-        dirs = [[-1,1],[0,1],[1,1],[-1,0],[1,0],[1,-1],[-1,0],[-1,-1]]
+        dirs = [[-1,1],[0,1],[1,1],[-1,0],[1,0],[1,-1],[0,-1],[-1,-1]]
         for dr, dc in dirs:
             if self.row + dr <0 or self.row + dr >7 or self.col + dc <0 or self.col + dc >7:
                 continue

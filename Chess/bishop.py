@@ -1,8 +1,8 @@
 from Chess.piece import Piece
-
+from Chess import main
 class Bishop(Piece):
-    def __init__(self, color, position):
-        super().__init__(color, position,"bishop")
+    def __init__(self, color, position,label):
+        super().__init__(color, position,"bishop",label)
 
     def __str__(self):
         return "b"
@@ -10,7 +10,13 @@ class Bishop(Piece):
     def __repr__(self):
         return self.__str__()
   
-    def available_moves(self, board,white_map, black_map):
+    def available_moves(self, board,white_map, black_map,w_king,b_king,pred):
+        if self.color:
+            king = w_king
+            map = black_map
+        else:
+            king = b_king
+            map = white_map
         temp = self.col
         self.col = self.row
         self.row = temp
@@ -26,12 +32,20 @@ class Bishop(Piece):
                     #print(str(self.row+dr) + " out of bounds, breaking")
                     break #check if out of bounds
                 if board[self.col + dc][self.row+dr].piece == None:
-                    res.append((self.col + dc, self.row+ dr))
+                    if pred:
+                        if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+dc,self.row+dr),(self.col,self.row)):
+                            res.append((self.col + dc, self.row+ dr))
+                    else:
+                        res.append((self.col + dc, self.row+ dr))
                 #piece present, can we capture it?
                 if board[self.col + dc][self.row+dr].piece != None:
                     if board[self.col + dc][self.row+dr].piece.color != self.color:
                         #print("takeable piece at " + str(self.row + dr) + "," + str(self.col))
-                        res.append((self.col + dc, self.row+dr)) # can take
+                        if pred:
+                            if not main.predict(board,map,w_king,b_king, (king[0],king[1]),(self.col+dc,self.row+dr),(self.col,self.row)):
+                                res.append((self.col + dc, self.row+ dr))
+                        else:
+                            res.append((self.col + dc, self.row+ dr))
                     #else:
                     #print("not takeable piece at " + str(self.row + dr) + "," + str(self.col))
                     break
