@@ -14,7 +14,7 @@ def play_chess(elo = 1000):
     stockfish.set_elo_rating(elo)
 
     pygame.init()
-    background_colour = (234, 212, 252) 
+    background_colour = (128, 128, 128) 
     blue = (0,0,255)
     red = (255,0,0)
     BLACK = (0,0,0)
@@ -343,7 +343,6 @@ def play_chess(elo = 1000):
                         timer = 0
                         turn = not turn
                         main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
-                        print(black_map)
                         if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
                             white_check = True
                             white_mate = True
