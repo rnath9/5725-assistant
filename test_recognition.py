@@ -5,6 +5,7 @@ import json
 import pyttsx3
 import weather
 import jokes
+import game
 RPi = True
 try:
     import led
@@ -35,7 +36,6 @@ while loop_running:
         keyword = recognizer.Result()
         print(keyword)
         if ("mongo" in keyword):    
-            print(RPi)
             if RPi:
                 print("light")
                 led.turn_LED_on()
@@ -53,7 +53,6 @@ while loop_running:
                             if possible_match in t:
                                 match = k
                     print(t)
-                    print(match)
                     if match == None:
                         engine.say("i do not understand")
                     else:
@@ -61,6 +60,11 @@ while loop_running:
                             engine.say(weather.get_weather_results(t))
                         elif match == 'joke':
                             engine.say(jokes.get_joke())
+                        elif match == 'game':
+                            engine.say('good luck!')
+                            engine.runAndWait()
+                            game.play()
+                            engine.say('that was fun!')
                         elif match == 'close':
                             engine.say("we over")
                             engine.runAndWait()
