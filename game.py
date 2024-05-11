@@ -142,16 +142,24 @@ def play_chess(elo = 1000):
                                 if dest.col >4:
                                     if turn:
                                         board[0][5].piece = board[0][7].piece
+                                        board[0][5].piece.row = 0
+                                        board[0][5].piece.col = 5
                                         board[0][7].piece = None
                                     else:
                                         board[7][5].piece = board[7][7].piece
+                                        board[7][5].piece.row = 7
+                                        board[7][5].piece.col = 5
                                         board[7][7].piece = None   
                                 else:
                                     if turn:
                                         board[0][3].piece = board[0][0].piece
+                                        board[0][3].piece.row = 0
+                                        board[0][3].piece.col = 3
                                         board[0][0].piece = None
                                     else:
                                         board[7][3].piece = board[7][0].piece
+                                        board[7][3].piece.row = 7
+                                        board[7][3].piece.col = 3
                                         board[7][0].piece = None 
                             
                         if (isinstance(selected_piece,main.Pawn)):
@@ -266,16 +274,24 @@ def play_chess(elo = 1000):
                                 if dest.col >4:
                                     if turn:
                                         board[0][5].piece = board[0][7].piece
+                                        board[0][5].piece.row = 0
+                                        board[0][5].piece.col = 5
                                         board[0][7].piece = None
                                     else:
                                         board[7][5].piece = board[7][7].piece
+                                        board[7][5].piece.row = 7
+                                        board[7][5].piece.col = 5
                                         board[7][7].piece = None   
                                 else:
                                     if turn:
                                         board[0][3].piece = board[0][0].piece
+                                        board[0][3].piece.row = 0
+                                        board[0][3].piece.col = 3
                                         board[0][0].piece = None
                                     else:
                                         board[7][3].piece = board[7][0].piece
+                                        board[7][3].piece.row = 7
+                                        board[7][3].piece.col = 3
                                         board[7][0].piece = None 
                             
                         if (isinstance(selected_piece,main.Pawn)):
@@ -323,6 +339,7 @@ def play_chess(elo = 1000):
                         timer = 0
                         turn = not turn
                         main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
+                        print(black_map)
                         if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
                             white_check = True
                             white_mate = True
