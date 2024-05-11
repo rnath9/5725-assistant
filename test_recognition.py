@@ -63,7 +63,7 @@ while loop_running:
                         elif match == 'game':
                             engine.say('good luck!')
                             engine.runAndWait()
-                            game.play()
+                            game.play_chess()
                             engine.say('that was fun!')
                         elif match == 'close':
                             engine.say("we over")
