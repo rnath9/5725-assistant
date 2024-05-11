@@ -31,13 +31,12 @@ ITHACA_LOCATION = (42.440498, -76.495697)
 
 loop_running = True
 while loop_running:
-    data_initial = stream.read(8192, exception_on_overflow=False)
+    data_initial = stream.read(4096, exception_on_overflow=False)
     if recognizer.AcceptWaveform(data_initial):
         keyword = recognizer.Result()
         print(keyword)
         if ("mongo" in keyword):    
             if RPi:
-                print("light")
                 led.turn_LED_on()
             else:
                 print("not RPi")
@@ -61,9 +60,29 @@ while loop_running:
                         elif match == 'joke':
                             engine.say(jokes.get_joke())
                         elif match == 'game':
-                            engine.say('good luck!')
+                            engine.say('would you like to play easy, medium, or hard')
                             engine.runAndWait()
-                            game.play_chess()
+                            if RPi:
+                                led.turn_LED_on
+                            else:
+                                print("Not RPi")
+                            while True:
+                                data = stream.read(4096, exception_on_overflow=False)
+                                if recognizer.AcceptWaveform(data):
+                                    if RPi:
+                                        led.turn_LED_off
+                                    t = (recognizer.Result())[14:-3]
+                                    engine.say("good luck!")
+                                    if ('ea' in t):
+                                        game.play_chess(600)
+                                    elif ('m' in t):
+                                        game.play_chess(1200)
+                                    elif ('h' in t):
+                                        game.play_chess(1800)
+                                    else:
+                                        game.play_chess(1200)
+                                    engine.runAndWait()
+                                    break
                             engine.say('that was fun!')
                         elif match == 'close':
                             engine.say("we over")
