@@ -3,6 +3,8 @@ import pygame
 from stockfish import Stockfish
 from Chess import main
 from Chess.piece import Piece
+from playsound import playsound
+from pygame import mixer
 
 def play_chess(elo = 1000):
     # Define the background colour 
@@ -17,7 +19,8 @@ def play_chess(elo = 1000):
     red = (255,0,0)
     BLACK = (0,0,0)
     font = pygame.font.Font(None, 32)
-    
+    mixer.init()
+    mixer.music.load("resources/move-self.mp3")
     # Define the dimensions of 
     # screen object(width,height) 
 
@@ -232,6 +235,7 @@ def play_chess(elo = 1000):
                     # print((2,0) in white_map)
                     # print(white_king_pos)
                     # print("move made")
+                        mixer.music.play()
                 else:
                     if timer>500: 
                         FEN = board_to_fen(board)
@@ -366,6 +370,7 @@ def play_chess(elo = 1000):
                     # print(white_king_pos)
                     # print("move made")
                         turn = False
+                        mixer.music.play()
             else:
                 if timer > 5000:
                     raise ValueError
@@ -382,7 +387,11 @@ def play_chess(elo = 1000):
                     x = x_offset + j * cell_size
                     y = y_offset + i * cell_size
                     # Draw a rectangle for the cell
-                    pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1) 
+                    if (x+y) % 2 == 0:
+                        pygame.draw.rect(screen, (92, 64, 51), (x, y, cell_size, cell_size), 27)
+                    else:
+                         pygame.draw.rect(screen, (225, 193, 110), (x, y, cell_size, cell_size), 27) 
+                    #pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1) 
             if selected_piece != None:
                 for x in available_moves:
                     pygame.draw.rect(screen, blue, (x[1]*27 + 53, x[0]*27+11, 25, 25))
