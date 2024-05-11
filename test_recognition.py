@@ -72,6 +72,7 @@ while loop_running:
                                     if RPi:
                                         led.turn_LED_off
                                     t = (recognizer.Result())[14:-3]
+                                    engine.say("good luck!")
                                     if ('ea' in t):
                                         game.play_chess(600)
                                     elif ('m' in t):
@@ -80,6 +81,7 @@ while loop_running:
                                         game.play_chess(1800)
                                     else:
                                         game.play_chess(1200)
+                                    engine.runAndWait()
                                     break
                             engine.say('that was fun!')
                         elif match == 'close':
