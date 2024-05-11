@@ -156,7 +156,7 @@ while running:
                             del black_map[name]
                         else:
                             del white_map[name]  
-                board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
+                        board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
             if (isinstance(selected_piece,main.Rook)):
                 selected_piece.has_moved = True
             if (dest.piece != None):
@@ -197,8 +197,8 @@ while running:
                         if y.piece !=None and y.piece.color:
                             if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
                                 white_mate = False
-                if white_mate:
-                    print("CHECKMATE, BLACK WINS")                
+                # if white_mate:
+                #     print("CHECKMATE, BLACK WINS")                
             if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
                 black_check = True
                 black_mate = True
@@ -207,10 +207,10 @@ while running:
                         if y.piece !=None and not y.piece.color:
                             if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
                                 black_mate = False
-                if black_mate:
-                    print("CHECKMATE, WHITE WINS") 
-            print(white_map)
-            print(black_map)
+                # if black_mate:
+                #     print("CHECKMATE, WHITE WINS") 
+            # print(white_map)
+            # print(black_map)
         # print((2,0) in white_map)
         # print(white_king_pos)
         # print("move made")

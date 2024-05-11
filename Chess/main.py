@@ -77,13 +77,15 @@ def predict(board,map,w_king,b_king, king,new_pos,og_pos):
   for k,_ in map.items():
     map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
   result = Piece.check_map(king,map)
-
   board[og_pos[0]][og_pos[1]].piece = board[new_pos[0]][new_pos[1]].piece
   board[new_pos[0]][new_pos[1]].piece = old_piece
   if changed:
     map[name] = [board[new_pos[0]][new_pos[1]].piece, set()]
   for k,_ in map.items():
-    map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
+    if (isinstance(map[k][0], Pawn)):
+      map[k][1] = set(map[k][0].available_pawn_attack(board,map,map,w_king,b_king, False))
+    else:  
+      map[k][1] = set(map[k][0].available_moves(board,map,map,w_king,b_king, False))
   return result
 
 def pawn_promote(board, turn, num_promoted):
