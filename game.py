@@ -3,7 +3,7 @@ import pygame
 from Chess import main
 from Chess.piece import Piece
 
-def play():
+def play_chess():
     # Define the background colour 
     # using RGB color coding. 
     pygame.init()
@@ -57,6 +57,8 @@ def play():
     available_moves = []
     white_king_pos = [0,4]
     black_king_pos = [7,4]
+    num_white_promoted = 0
+    num_black_promoted = 0
     white_check = False
     black_check = False
     white_mate = False
@@ -155,7 +157,7 @@ def play():
                                 del black_map[name]
                             else:
                                 del white_map[name]  
-                    board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
+                            board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
                 if (isinstance(selected_piece,main.Rook)):
                     selected_piece.has_moved = True
                 if (dest.piece != None):
@@ -171,6 +173,20 @@ def play():
                 dest.piece.row = dest.row
                 selected_piece = None
                 dest = None
+                pawn_promoted = main.pawn_promote(board,turn, num_white_promoted if turn else num_black_promoted)
+                if pawn_promoted:
+                    name = pawn_promoted[0].piece.label
+                    old_name = pawn_promoted[1]
+                    if turn:
+                        num_white_promoted += 1
+                        del white_map[old_name]
+                        white_map[name] = [pawn_promoted[0].piece, set()]
+                        white_map[name][1] = set(white_map[name][0].available_moves(board,white_map,black_map,white_king_pos,black_king_pos, False))
+                    else:
+                        num_black_promoted += 1
+                        del black_map[old_name]
+                        black_map[name] = [pawn_promoted[0].piece, set()]
+                        black_map[name][1] = set(black_map[name][0].available_moves(board,white_map,black_map,white_king_pos,black_king_pos, False))
                 timer = 0
                 turn = not turn
                 main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
@@ -182,8 +198,8 @@ def play():
                             if y.piece !=None and y.piece.color:
                                 if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
                                     white_mate = False
-                    if white_mate:
-                        print("CHECKMATE, BLACK WINS")                
+                    # if white_mate:
+                    #     print("CHECKMATE, BLACK WINS")                
                 if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
                     black_check = True
                     black_mate = True
@@ -192,10 +208,10 @@ def play():
                             if y.piece !=None and not y.piece.color:
                                 if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
                                     black_mate = False
-                    if black_mate:
-                        print("CHECKMATE, WHITE WINS") 
-                print(white_map)
-                print(black_map)
+                    # if black_mate:
+                    #     print("CHECKMATE, WHITE WINS") 
+                # print(white_map)
+                # print(black_map)
             # print((2,0) in white_map)
             # print(white_king_pos)
             # print("move made")
@@ -256,4 +272,5 @@ def play():
                 running = False
 
 
-   
+if __name__ == "__main__":
+    play_chess()

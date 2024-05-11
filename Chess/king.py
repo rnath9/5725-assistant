@@ -1,5 +1,6 @@
 from Chess.piece import Piece
 from Chess.rook import Rook
+from Chess import main
 
 class King(Piece):
 
@@ -27,14 +28,24 @@ class King(Piece):
             if self.row + dr <0 or self.row + dr >7 or self.col + dc <0 or self.col + dc >7:
                 continue
             if board[self.col + dc][self.row+dr].piece == None and not Piece.check_map((self.col+dc,self.row+dr),map):
+                if pred:
+                    if not main.predict(board,map,w_king,b_king, (self.col+dc,self.row+dr),(self.col+dc,self.row+dr),(self.col,self.row)):
+                        res.append((self.col + dc, self.row+ dr))
+                else:
+                    res.append((self.col + dc, self.row+ dr))
                 # print((self.col+dc,self.row+dr))
                 # print(Piece.check_map((self.col+dc,self.row+dr),map))
                 # print(map)
-                res.append((self.col + dc, self.row+ dr))
+                # res.append((self.col + dc, self.row+ dr))
             #piece present, can we capture it?
             if board[self.col + dc][self.row+dr].piece != None and not Piece.check_map((self.col+dc,self.row+dr),map):
                 if board[self.col + dc][self.row+dr].piece.color != self.color:
-                    res.append((self.col + dc, self.row+dr)) # can take
+                    if pred:
+                        if not main.predict(board,map,w_king,b_king, (self.col,self.row),(self.col+dc,self.row+dr),(self.col,self.row)):
+                            res.append((self.col + dc, self.row+ dr))
+                    else:
+                        res.append((self.col + dc, self.row+ dr))
+                    # res.append((self.col + dc, self.row+dr)) # can take
                 continue
         if (not Piece.check_map((self.col,self.row),map) and not self.has_moved):
             possible = True
