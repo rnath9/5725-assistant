@@ -41,7 +41,7 @@ class King(Piece):
             if board[self.col + dc][self.row+dr].piece != None and not Piece.check_map((self.col+dc,self.row+dr),map):
                 if board[self.col + dc][self.row+dr].piece.color != self.color:
                     if pred:
-                        if not main.predict(board,map,w_king,b_king, (self.col,self.row),(self.col+dc,self.row+dr),(self.col,self.row)):
+                        if not main.predict(board,map,w_king,b_king, (self.col+dc,self.row+dr),(self.col+dc,self.row+dr),(self.col,self.row)):
                             res.append((self.col + dc, self.row+ dr))
                     else:
                         res.append((self.col + dc, self.row+ dr))
