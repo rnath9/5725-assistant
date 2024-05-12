@@ -86,7 +86,6 @@ def play_chess(elo = 1000):
     white_mate = False
     black_mate = False
     prevmouse = None
-    print("setup done")
     #print(board_to_fen(board))
     # game loop 
     try: 
@@ -260,9 +259,7 @@ def play_chess(elo = 1000):
                     if timer>500: 
                         FEN = board_to_fen(board)
                         stockfish.set_fen_position(FEN)
-                        move = stockfish.get_best_move(1000)
-                        print(move)
-                        print(FEN)
+                        move = stockfish.get_best_move(10000)
                         start, end = AI_move(move)
                         selected_piece = board[start[0]][start[1]].piece
                         dest = board[end[0]][end[1]]
