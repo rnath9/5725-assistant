@@ -8,7 +8,7 @@ from playsound import playsound
 from pygame import mixer
 import RPi.GPIO as GPIO
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
-os.putenv('SDL_FBDEV', '/dev/fb1')
+os.putenv('SDL_FBDEV', '/dev/fb0')
 os.putenv('SDL_MOUSEDRV', 'dummy')
 os.putenv('SDL_MOUSEDEV','/dev/null')
 os.putenv('DISPLAY','')

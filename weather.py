@@ -31,7 +31,7 @@ def parse_sentence_for_time(s):
 
     if day is None:
         if "tomorrow" in tokens:
-            day = weekdays[weekdays.index(current_day())+1]
+            day = weekdays[(weekdays.index(current_day())+1)%7]
         else:
             day = current_day()
     if time == "":

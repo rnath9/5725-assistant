@@ -7,6 +7,17 @@ freq = 10
 duty_cycle = 100
 pwm4 = GPIO.PWM(4,freq)
 
+def setup():
+    try:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(4, GPIO.OUT)
+            
+        freq = 10
+        duty_cycle = 100
+        pwm4 = GPIO.PWM(4,freq)
+    except:
+        print("already setup")
+
 def turn_LED_on():
     pwm4.start(duty_cycle)
 

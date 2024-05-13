@@ -8,7 +8,7 @@ jokes = ["Why did the rabbit go to the salon? It was having a bad hare day!",
          "What kind of bagel can travel? A plain bagel!",
          "I've never been a fan of facial hair. But now it's starting to grow on me.",
          "Did you hear about the guy who afraid of hurdles? He got over it.",
-         "Why did the computer catch cold? It left a window open!"]
+         "Why did the computer catch a cold? It left a window open!"]
 
 def get_joke():
     index = random.randint(0,len(jokes)-1)
