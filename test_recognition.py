@@ -2,7 +2,7 @@ import pyaudio
 import os
 import pygame
 from time import sleep as slumber
-slumber(1)
+slumber(20)
 from vosk import Model, KaldiRecognizer
 import json
 import pyttsx3
