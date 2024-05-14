@@ -13,7 +13,7 @@ class Queen(Piece):
   def __repr__(self):
     return self.__str__()
   
-  def available_moves(self, board,white_map, black_map,w_king,b_king,pred):
+  def available_moves(self, board,white_map, black_map,w_king,b_king,pred): #Just adds bishop and rook together
     res = []
     res += Rook.available_moves(self, board,white_map, black_map,w_king,b_king,pred)
     res += Bishop.available_moves(self, board,white_map, black_map,w_king,b_king,pred)

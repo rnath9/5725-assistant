@@ -12,6 +12,7 @@ class Knight(Piece):
     def __repr__(self):
         return self.__str__()
   
+    #Checks the moves that the piece can make and does a lot of computations (It's our special sauce)
     def available_moves(self, board,white_map, black_map, w_king,b_king,pred):
         if self.color:
             king = w_king

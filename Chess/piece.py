@@ -12,7 +12,7 @@ class Piece:
     self.image = pygame.image.load('Chess/Images/'+piece+'_'+cname+".png")
     self.image = pygame.transform.scale(self.image,(22,22))
   
-    def move(self, board, row, col):
+    def move(self, board, row, col): #Deprecated
         if [row, col] not in self.available_moves(board):
             return False
         self.row = row
@@ -22,10 +22,8 @@ class Piece:
   def get_image(self):
     return self.image
   
-  def check_map(position, map):
+  def check_map(position, map): #used to see if king is in check
     for key, value in map.items():
       if position in value[1]:
         return True
     return False
-  # def available_moves(self):
-  #   raise NotImplementedError("Subclasses must implement this method")

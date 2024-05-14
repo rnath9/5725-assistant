@@ -14,6 +14,8 @@ class King(Piece):
     def __repr__(self):
         return self.__str__()
     
+
+    #Checks the moves that the piece can make and does a lot of computations (It's our special sauce)
     def available_moves(self, board, white_map, black_map,w_king,b_king,pred):
         if self.color:
             map = black_map
@@ -33,10 +35,6 @@ class King(Piece):
                         res.append((self.col + dc, self.row+ dr))
                 else:
                     res.append((self.col + dc, self.row+ dr))
-                # print((self.col+dc,self.row+dr))
-                # print(Piece.check_map((self.col+dc,self.row+dr),map))
-                # print(map)
-                # res.append((self.col + dc, self.row+ dr))
             #piece present, can we capture it?
             if board[self.col + dc][self.row+dr].piece != None and not Piece.check_map((self.col+dc,self.row+dr),map):
                 if board[self.col + dc][self.row+dr].piece.color != self.color:
@@ -45,7 +43,6 @@ class King(Piece):
                             res.append((self.col + dc, self.row+ dr))
                     else:
                         res.append((self.col + dc, self.row+ dr))
-                    # res.append((self.col + dc, self.row+dr)) # can take
                 continue
         if (not Piece.check_map((self.col,self.row),map) and not self.has_moved):
             possible = True

@@ -1,4 +1,5 @@
 import random
+# List of jokes Mungo can tell
 jokes = ["Why did the rabbit go to the salon? It was having a bad hare day!",
          "What kind of felines can bowl? Alley cats!",
          "Where do penguins go to vote? The North Poll!",
@@ -10,6 +11,7 @@ jokes = ["Why did the rabbit go to the salon? It was having a bad hare day!",
          "Did you hear about the guy who afraid of hurdles? He got over it.",
          "Why did the computer catch a cold? It left a window open!"]
 
+# Returns a random joke from the list of jokes above.
 def get_joke():
     index = random.randint(0,len(jokes)-1)
     return jokes[index]

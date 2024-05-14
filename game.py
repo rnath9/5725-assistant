@@ -17,14 +17,17 @@ def play_chess(elo = 1000):
     # Define the background colour 
     # using RGB color coding. 
     GPIO.setmode(GPIO.BCM)
-
+    
+    #Physical quit button
     available_buttons = set([27])
     for i in available_buttons:
             GPIO.setup(i, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    #Initialize AI        
     stockfish = Stockfish("stockfish/stockfish-android-armv7")
     stockfish.set_depth(20)
     stockfish.set_elo_rating(elo)
 
+    #Load resources
     pygame.init()
     background_colour = (128, 128, 128) 
     pitft = pigame.PiTft()
@@ -64,11 +67,12 @@ def play_chess(elo = 1000):
             pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1) 
 
     pygame.display.flip() 
+    #Initialize Board and attack maps
     board_initialized = main.initialize_board()
     board = board_initialized[0]
     white_map = board_initialized[1]
     black_map = board_initialized[2]
-    # Variable to keep our game loop running 
+    # Variables to keep our game loop running 
     running = True
     turn = True
     good_move = False
@@ -89,42 +93,43 @@ def play_chess(elo = 1000):
     #print(board_to_fen(board))
     # game loop 
     try: 
-        while running:    
+        while running: 
+            #Increment timer to prevent double clicking   
             clock.tick(60)
             timer += clock.get_time()
+            #Physical quit button that uses polling
             if (not GPIO.input(27)):
                 raise KeyError
+            #Update touch on tft
             pitft.update()
             #logic
-            if not white_mate and not black_mate:
-                if not turn:
+            if not white_mate and not black_mate: #Make sure that game is not over
+                if not turn: #Player turn
                     if (selected_piece == None and timer>500):
                         mouse_pos = pygame.mouse.get_pos()
-                        if (mouse_pos!=prevmouse):
+                        if (mouse_pos!=prevmouse): #find piece that the player selected
                             prevmouse = mouse_pos
                             choice = main.piece_at(board,mouse_pos[1],mouse_pos[0])
                             if (choice != False):
                                 if (choice.piece != None and choice.piece.color == turn):
-                                    selected_piece = choice.piece
+                                    selected_piece = choice.piece #select piece
                                 
-                                    available_moves = selected_piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True)
+                                    available_moves = selected_piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) #set available moves
                                     if available_moves == []:
-                                        selected_piece = None
-                                        #print("wrong piece dummy")
+                                        selected_piece = None #reset if the piece cannot move
                                     timer = 0
                                     
                     
                     if (dest == None and selected_piece != None and timer>500):
-                        mouse_pos = pygame.mouse.get_pos() 
+                        mouse_pos = pygame.mouse.get_pos() #Find position that the player wants to move the piece to 
                         if (mouse_pos != prevmouse): 
                             prevmouse = mouse_pos
                             dest_choice = main.tile_at(board,mouse_pos[1],mouse_pos[0])
                             if (dest_choice!=False):
-                                temp = selected_piece.col
+                                temp = selected_piece.col #Weird flipping of variables that should have been avoided
                                 selected_piece.col = selected_piece.row
                                 selected_piece.row = temp
-                                # print((dest_choice.row,dest_choice.col) in selected_piece.available_moves(board,white_map,black_map))
-                                if ((dest_choice.row,dest_choice.col) in available_moves):
+                                if ((dest_choice.row,dest_choice.col) in available_moves): #make sure move is possible
                                     dest = dest_choice  
                                     board[selected_piece.col][selected_piece.row].piece = None  
                                 else:
@@ -132,12 +137,12 @@ def play_chess(elo = 1000):
                                     selected_piece.col = selected_piece.row
                                     selected_piece.row = temp
                                     selected_piece = None
-                                    #print("NOT A LEGAL MOVE")    
+                                       
                                         
-                    if (dest != None and selected_piece != None):
+                    if (dest != None and selected_piece != None): #Piece and destination are chosen
                         white_check = False
                         black_check = False
-                        if (turn):
+                        if (turn): #Update all of the pawns for en passant logic
                             for x in board:
                                 for y in x:
                                     if y.piece!= None:
@@ -151,16 +156,16 @@ def play_chess(elo = 1000):
                                         if y.piece.color:
                                             if isinstance(y.piece,main.Pawn):
                                                 y.piece.en_passant_possible = False   
-                        board[selected_piece.col][selected_piece.row].piece = None
-                        if(isinstance(selected_piece,main.King)):
+                        board[selected_piece.col][selected_piece.row].piece = None #remove piece from original location
+                        if(isinstance(selected_piece,main.King)): 
                             selected_piece.has_moved = True
-                            if selected_piece.color:
+                            if selected_piece.color: #update global location
                                 white_king_pos[0] = dest.row
                                 white_king_pos[1] = dest.col
                             else:
                                 black_king_pos[0] = dest.row
                                 black_king_pos[1] = dest.col  
-                            if abs(selected_piece.row - dest.col)>1:
+                            if abs(selected_piece.row - dest.col)>1: #Move the appropriate rook when castling
                                 if dest.col >4:
                                     if turn:
                                         board[0][5].piece = board[0][7].piece
@@ -185,19 +190,19 @@ def play_chess(elo = 1000):
                                         board[7][0].piece = None 
                             
                         if (isinstance(selected_piece,main.Pawn)):
-                            selected_piece.has_moved = True
+                            selected_piece.has_moved = True #used for two square pawn move
                             if abs(selected_piece.col - dest.row)>1:
                                 #en passant possible
                                 selected_piece.en_passant_possible = True
-                                # print("possible")
-                                if (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)):
+                                if (board[dest.row][dest.col].piece == None and isinstance(board[dest.row +(-1 if turn else +1) ][dest.col].piece,main.Pawn)): 
+                                    #Deleting the correct pieces for en passant
                                     name = board[dest.row +(-1 if turn else +1) ][dest.col].piece.label
                                     if turn:
                                         del black_map[name]
                                     else:
                                         del white_map[name]  
                                     board[dest.row +(-1 if turn else +1) ][dest.col].piece = None   
-                        if (isinstance(selected_piece,main.Rook)):
+                        if (isinstance(selected_piece,main.Rook)): #Used for castling logic
                             selected_piece.has_moved = True
                         if (dest.piece != None):
                             #delete piece from map
@@ -213,7 +218,7 @@ def play_chess(elo = 1000):
                         selected_piece = None
                         dest = None
                         pawn_promoted = main.pawn_promote(board,turn, num_white_promoted if turn else num_black_promoted)
-                        if pawn_promoted:
+                        if pawn_promoted: #promote pawn to a queen when possible by changing board and attack map
                             name = pawn_promoted[0].piece.label
                             old_name = pawn_promoted[1]
                             if turn:
@@ -228,17 +233,15 @@ def play_chess(elo = 1000):
                                 black_map[name][1] = set(black_map[name][0].available_moves(board,white_map,black_map,white_king_pos,black_king_pos, False))
                         timer = 0
                         turn = not turn
-                        main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos)
-                        if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)):
+                        main.attack_map_update(board,white_map,black_map,white_king_pos,black_king_pos) #update the attack map
+                        if (Piece.check_map((white_king_pos[0],white_king_pos[1]),black_map)): #Checking if either player is in check and also checkmate
                             white_check = True
                             white_mate = True
                             for x in board:
                                 for y in x:
                                     if y.piece !=None and y.piece.color:
                                         if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
-                                            white_mate = False
-                            # if white_mate:
-                            #     print("CHECKMATE, BLACK WINS")                
+                                            white_mate = False              
                         if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
                             black_check = True
                             black_mate = True
@@ -247,20 +250,14 @@ def play_chess(elo = 1000):
                                     if y.piece !=None and not y.piece.color:
                                         if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
                                             black_mate = False
-                            # if black_mate:
-                            #     print("CHECKMATE, WHITE WINS") 
-                        # print(white_map)
-                        # print(black_map)
-                    # print((2,0) in white_map)
-                    # print(white_king_pos)
-                    # print("move made")
-                        mixer.music.play()
-                else:
+                        mixer.music.play() #Play chess move noise
+                else: #AI Turn
                     if timer>500: 
-                        FEN = board_to_fen(board)
+                        FEN = board_to_fen(board) #Translate board for AI
                         stockfish.set_fen_position(FEN)
-                        move = stockfish.get_best_move(10000)
-                        start, end = AI_move(move)
+                        move = stockfish.get_best_move(10000) #Give it about 3 seconds to think
+                        start, end = AI_move(move) 
+                        #translate the move onto the actual board (Same as for the player)
                         selected_piece = board[start[0]][start[1]].piece
                         dest = board[end[0]][end[1]]
                         tmp = selected_piece.row
@@ -367,9 +364,7 @@ def play_chess(elo = 1000):
                                 for y in x:
                                     if y.piece !=None and y.piece.color:
                                         if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
-                                            white_mate = False
-                            # if white_mate:
-                            #     print("CHECKMATE, BLACK WINS")                
+                                            white_mate = False               
                         if (Piece.check_map((black_king_pos[0],black_king_pos[1]),white_map)):
                             black_check = True
                             black_mate = True
@@ -378,15 +373,8 @@ def play_chess(elo = 1000):
                                     if y.piece !=None and not y.piece.color:
                                         if y.piece.available_moves(board,white_map,black_map,white_king_pos,black_king_pos, True) != []:
                                             black_mate = False
-                            # if black_mate:
-                            #     print("CHECKMATE, WHITE WINS") 
-                        # print(white_map)
-                        # print(black_map)
-                    # print((2,0) in white_map)
-                    # print(white_king_pos)
-                    # print("move made")
-                        turn = False
-                        mixer.music.play()
+                        turn = False #swamp turn
+                        mixer.music.play() #play sound
             else:
                 if timer > 5000:
                     raise ValueError
@@ -409,21 +397,21 @@ def play_chess(elo = 1000):
                         pygame.draw.rect(screen, (225, 193, 110), (x, y, 25,25))
                     #     pygame.draw.rect(screen, (225, 193, 110), (x, y, cell_size, cell_size), 27) 
                     pygame.draw.rect(screen, (255, 255, 255), (x, y, cell_size, cell_size), 1) 
-            if selected_piece != None:
+            if selected_piece != None: #Draw available moves
                 for x in available_moves:
                     pygame.draw.rect(screen, blue, (x[1]*27 + 53, x[0]*27+11, 25, 25))
-            if white_check:
+            if white_check: #Draw if in check
                 pygame.draw.rect(screen, red, (white_king_pos[1]*27 + 53, white_king_pos[0]*27+11, 25, 25))
             if black_check:
                 pygame.draw.rect(screen, red, (black_king_pos[1]*27 + 53, black_king_pos[0]*27+11, 25, 25))
 
-            for i in range(len(board)):
+            for i in range(len(board)): #draw pieces on board
                 for j in range(len(board[0])):
                     square = board[i][j]
                     if square.piece != None:
                         image = square.get_image()
                         screen.blit(image,(j*27+55,i*27+12))
-            if white_mate:
+            if white_mate: #Draw winning or losing text
                 text = font.render("CHECKMATE: BLACK WINS", True, BLACK)
 
                 # Get the rectangle object that has the dimensions of the text surface
@@ -445,12 +433,12 @@ def play_chess(elo = 1000):
 
                 # Blit the text surface onto the screen
                 screen.blit(text, text_rect)
-            for event in pygame.event.get(): 
+            for event in pygame.event.get(): #quitting using the x button (Used for when testing on laptop)
             
                 # Check for QUIT event       
                 if event.type == pygame.QUIT: 
                     running = False
-    except:
+    except: #close out cleanly
         del (pitft)
         pass
     finally:
@@ -479,15 +467,15 @@ def board_to_fen(board):
         fen += '/'
 
     fen = fen[:-1]  # Remove the trailing '/'
-    fen += ' w - - 0 1'  # Additional FEN fields for active color, castling availability, en passant, halfmove clock, and fullmove number
+    fen += ' w - - 0 1'
 
     return fen
 
-def AI_move(command):
+def AI_move(command): #Parsing the AI command
     start = command[:2]
     dest = command[2:]
     return main.get_coordinates(start), main.get_coordinates(dest)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": #Used for testing
     play_chess(1000)

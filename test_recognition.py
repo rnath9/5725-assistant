@@ -156,11 +156,8 @@ try:
                                     music_files = glob("resources/music/*")
                                     song_index = random.randint(0,len(music_files)-1)
                                     song = music_files[song_index]
-                                    print(song)
                                     channel2 = mixer.Channel(1)
                                     sound2 = mixer.Sound(song)
-                                    #mixer.music.load(song)
-                                    #mixer.music.play()
                                     channel2.play(sound2)
                                     channel2.set_volume(0.6)
                                     volume = 0.6

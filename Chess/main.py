@@ -7,8 +7,8 @@ from Chess.queen import Queen
 from Chess.knight import Knight
 from Chess.king import King
 import math
-#TODO turn that into a package
-def initialize_board():
+
+def initialize_board(): #SETUP THE GLORIOUS BOARD AND THE ATTACK MAPS
   board = [[None for _ in range(8)] for _ in range(8)]
   for c in range(8):
     for r in range(8):
@@ -65,7 +65,7 @@ def attack_map_update(board,white_attack_map,black_attack_map,w_king,b_king):
     else:
       black_attack_map[k][1] = set(black_attack_map[k][0].available_moves(board,white_attack_map,black_attack_map,w_king,b_king, False))
 
-def predict(board,map,w_king,b_king, king,new_pos,og_pos):
+def predict(board,map,w_king,b_king, king,new_pos,og_pos): #Look at potential board setups to see if certain moves are possible
   changed = False
   old_piece = board[new_pos[0]][new_pos[1]].piece
   if (board[new_pos[0]][new_pos[1]].piece != None):
@@ -96,7 +96,7 @@ def pawn_promote(board, turn, num_promoted):
         return cell, old_name
     return None
 
-def piece_at(board, x,y):
+def piece_at(board, x,y): #translates screen coordinates to board
   if (x>=220 or x<=10):
     return False
   elif (y<50 or y>270):
@@ -106,7 +106,7 @@ def piece_at(board, x,y):
     y = y - 50
     return board[math.floor(x/27)][math.floor(y/27)]
   
-def tile_at(board,x,y):
+def tile_at(board,x,y): #deprecated
   if (x>220 or x<10):
     return False
   elif (y<50 or y>270):
@@ -119,90 +119,11 @@ def tile_at(board,x,y):
     except:
       return False
 """Prints ths square name of a coordinate (ex: [0,0] maps to A1)"""
-def print_cell(coordinates):
+def print_cell(coordinates): #used in original version which was in the terminal
     print(chr(ord('A')+coordinates[1])+str(coordinates[0]+1))
 
 """Takes in an input, like "A4" and maps it to the coordinates [0,3]"""
-def get_coordinates(square_name):
+def get_coordinates(square_name): #used for translating AI
     assert len(square_name) == 2
     return [int(square_name[1])-1,ord(square_name[0].upper()) - ord('A')]
 
-# def print_board():
-#   for row in board[::-1]:
-#     print(row)
-
-# whiteTurn = True
-# while True:
-#   print_board()
-#   print("make a move")
-#   goodMove = False 
-#   while not goodMove:
-#     userstatement = input().split(" ")
-#     piece_place = userstatement[0]
-#     destination = userstatement[-1]
-#     piece_coords = get_coordinates(piece_place)
-#     piece = board[piece_coords[0]][piece_coords[1]].piece
-#     try:
-#       print(piece.available_moves(board))
-#     except AttributeError:
-#       print("Not a valid move, try again")
-#       continue
-#     print(piece.color)
-#     if get_coordinates(destination) in piece.available_moves(board) and ((whiteTurn and piece.color == "white") or (not whiteTurn and piece.color != "white")):
-#       board[piece_coords[0]][piece_coords[1]].piece = None
-#       coords = get_coordinates(destination)
-#       board[coords[0]][coords[1]].piece = piece
-#       piece.row = coords[0]
-#       piece.col = coords[1]
-#       goodMove = True
-#       whiteTurn = not whiteTurn
-# print("\nchecking white E pawn's moves")
-# E2 = get_coordinates("E2")
-# white_e_pawn = board[E2[0]][E2[1]].piece
-
-# for val in white_e_pawn.available_moves(board):
-#   print_cell(val)
-
-# print("\nchecking black E pawn's moves")
-# E7 = get_coordinates("E7")
-# black_e_pawn = board[E7[0]][E7[1]].piece
-
-# for val in black_e_pawn.available_moves(board):
-#   print_cell(val)
-
-
-# print("\nrook A1's moves")
-# A1 = get_coordinates("A1")
-# rook = board[A1[0]][A1[1]].piece
-
-
-# for val in rook.available_moves(board):
-#   print_cell(val)
-
-# print(rook.available_moves(board))
-
-# print("\ncreating a dummy black rook at A3, testing moves\n")
-# board[2][0].piece = Rook("black", [2,0])
-# rookA3 = board[2][0].piece
-# for val in rookA3.available_moves(board):
-#   print_cell(val)
-
-#bishop testing
-# print()
-# board[3][3].piece = Bishop("black", [3,3])
-# print_cell([3,3])
-# print()
-# for cell in (board[3][3].piece.available_moves(board)):
-#   print_cell(cell)
-
-#queen testing
-# print()
-# board[3][3].piece = Queen("black", [3,3])
-# print(board)
-# print()
-# for cell in (board[3][3].piece.available_moves(board)):
-#   print_cell(cell)
-
-#knight testing
-# for cell in (board[7][1].piece.available_moves(board)):
-#   print_cell(cell)
